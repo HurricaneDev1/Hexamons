@@ -10,7 +10,11 @@ public class LineCreation : MonoBehaviour
     [SerializeField]private float lineLength;
     [SerializeField]private float maxWidth;
     [SerializeField]private float minWidth;
+    [SerializeField]private GameObject circle;
+    [SerializeField]private int maxLetters;
+    private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private GameObject newLineGen;
+    private string monName;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +22,7 @@ public class LineCreation : MonoBehaviour
     }
 
     void Update(){
-        if(Input.GetKeyDown(KeyCode.J)){
+        if(Input.GetKey(KeyCode.J)){
             SetUpLines();
         }
     }
@@ -37,6 +41,26 @@ public class LineCreation : MonoBehaviour
             lRend.startWidth = Random.Range(minWidth,maxWidth);
             lRend.SetPosition(i, new Vector3(disX,disY,0));
         }
+
+        for(int j = 0; j < 2; j++){
+            float x = Random.Range(-lineLength * 20,lineLength * 20);
+            float y = Random.Range(-lineLength * 20,lineLength * 20);
+            Vector3 vec = new Vector3(transform.position.x + x,transform.position.y + y,0);
+            var circ = Instantiate(circle, vec, Quaternion.identity);
+            circ.transform.parent = lRend.GetComponent<Transform>();
+        }
+
+        MakeName();
+    }
+
+    void MakeName(){
+        monName = "";
+        int numLet = Random.Range(5,maxLetters);
+        for(int i = 0; i < numLet; i++){
+            int ranNum = Random.Range(0,26);
+            monName += letters[ranNum];
+        }
+        Debug.Log(monName);
     }
 
     Gradient MakeGradient(){

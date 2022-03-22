@@ -240,7 +240,9 @@ MonoBehaviour:
   minLines: 10
   lineLength: 1
   maxWidth: 5
-  minWidth: 1
+  minWidth: 2
+  circle: {fileID: 6457481996088883057, guid: 4573bea7bcf002a4f8c152d2ca8dabc8, type: 3}
+  maxLetters: 20
 --- !u!4 &1297867612
 Transform:
   m_ObjectHideFlags: 0
