@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalType: []
-  maxTypes: 2
+  maxTypes: 10
 --- !u!1001 &2193600149128458118
 PrefabInstance:
   m_ObjectHideFlags: 0
