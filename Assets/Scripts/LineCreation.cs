@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class LineCreation : MonoBehaviour
 {
+    [SerializeField]private GameObject circle;
     [SerializeField]private GameObject linePrefab;
+    private LineRenderer lRend;
     [SerializeField]private int numLines;
     [SerializeField]private int minLines;
     [SerializeField]private float lineLength;
     [SerializeField]private float maxWidth;
     [SerializeField]private float minWidth;
-    [SerializeField]private GameObject circle;
+    [SerializeField]private int eyeDis;
+    [SerializeField]private int maxEyes;
     [SerializeField]private int maxLetters;
     private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private GameObject newLineGen;
+    private GameObject savedMon;
     private string monName;
     // Start is called before the first frame update
     void Start()
@@ -22,8 +26,14 @@ public class LineCreation : MonoBehaviour
     }
 
     void Update(){
-        if(Input.GetKey(KeyCode.J)){
+        if(Input.GetKeyDown(KeyCode.J)){
             SetUpLines();
+        }
+        if(Input.GetKeyDown(KeyCode.K)){
+            savedMon = lRend.gameObject;
+        }
+        if(Input.GetKeyDown(KeyCode.L)){
+            SendOutMon();
         }
     }
 
@@ -32,7 +42,7 @@ public class LineCreation : MonoBehaviour
             Destroy(newLineGen);
         }
         newLineGen = Instantiate(linePrefab);
-        LineRenderer lRend = newLineGen.GetComponent<LineRenderer>();
+        lRend = newLineGen.GetComponent<LineRenderer>();
         lRend.positionCount = Random.Range(minLines,numLines);
         lRend.colorGradient = MakeGradient();
         for(int i = 0; i < lRend.positionCount; i++){
@@ -42,20 +52,25 @@ public class LineCreation : MonoBehaviour
             lRend.SetPosition(i, new Vector3(disX,disY,0));
         }
 
-        for(int j = 0; j < 2; j++){
-            float x = Random.Range(-lineLength * 20,lineLength * 20);
-            float y = Random.Range(-lineLength * 20,lineLength * 20);
-            Vector3 vec = new Vector3(transform.position.x + x,transform.position.y + y,0);
-            var circ = Instantiate(circle, vec, Quaternion.identity);
-            circ.transform.parent = lRend.GetComponent<Transform>();
-        }
+        PlaceEyes();
 
         MakeName();
     }
 
+    void PlaceEyes(){
+        int numEyes = Random.Range(1,maxEyes);
+        for(int j = 0; j < numEyes; j++){
+            float x = Random.Range(-lineLength * eyeDis,lineLength * eyeDis);
+            float y = Random.Range(-lineLength * eyeDis,lineLength * eyeDis);
+            Vector3 vec = new Vector3(transform.position.x + x,transform.position.y + y,0);
+            var circ = Instantiate(circle, vec, Quaternion.identity);
+            circ.transform.parent = lRend.GetComponent<Transform>();
+        }
+    }
+
     void MakeName(){
         monName = "";
-        int numLet = Random.Range(5,maxLetters);
+        int numLet = Random.Range(4,maxLetters);
         for(int i = 0; i < numLet; i++){
             int ranNum = Random.Range(0,26);
             monName += letters[ranNum];
@@ -82,5 +97,10 @@ public class LineCreation : MonoBehaviour
         (byte)UnityEngine.Random.Range(0, 255), //Blue
         255 //Alpha (transparency)
         );
+    }
+
+    void SendOutMon(){
+        Destroy(newLineGen);
+        Instantiate(savedMon,transform.position,Quaternion.identity);
     }
 }
