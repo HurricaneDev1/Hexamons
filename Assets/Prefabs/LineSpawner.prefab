@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2193600150290582746}
   - component: {fileID: 2193600150290582749}
+  - component: {fileID: 1999612777}
+  - component: {fileID: 1999612778}
   m_Layer: 0
   m_Name: LineSpawner
   m_TagString: Untagged
@@ -45,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   circle: {fileID: 6457481996088883057, guid: 4573bea7bcf002a4f8c152d2ca8dabc8, type: 3}
   linePrefab: {fileID: 6119919413024877098, guid: b04e72986df70d84e94f01eadce51ab7, type: 3}
+  lRend: {fileID: 0}
   numLines: 80
   minLines: 10
   lineLength: 1
@@ -53,3 +56,35 @@ MonoBehaviour:
   eyeDis: 20
   maxEyes: 3
   maxLetters: 15
+  monName: 
+--- !u!114 &1999612777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193600150290582748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1846cda4ff35a9a4e93b053f4d25b50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalType: []
+  Attack: 0
+  Defense: 0
+  Intelligence: 0
+  Speed: 0
+  line: {fileID: 2193600150290582749}
+--- !u!114 &1999612778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193600150290582748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 990d5d203a6422149bee692cb997a2f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseSimple: 0

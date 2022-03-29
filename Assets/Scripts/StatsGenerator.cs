@@ -12,11 +12,13 @@ public class StatsGenerator : MonoBehaviour
     [SerializeField]private int Defense;
     [SerializeField]private int Intelligence;
     [SerializeField]private int Speed;
-    public LineCreation line;
+    [SerializeField]private int Health;
+    private LineCreation line;
     // Start is called before the first frame update
     void Start()
     {
         finalType = ChooseType();
+        line = this.GetComponent<LineCreation>();
         MakeStats();
     }
 
@@ -44,5 +46,6 @@ public class StatsGenerator : MonoBehaviour
         Defense = Random.Range(posCount,posCount * 5);
         Intelligence = Random.Range(posCount,posCount * 5);
         Speed = Random.Range(posCount, posCount * 5);
+        Health = Random.Range(posCount * 2, posCount * 10);
     }
 }
