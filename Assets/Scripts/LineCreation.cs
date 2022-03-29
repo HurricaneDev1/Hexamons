@@ -6,7 +6,7 @@ public class LineCreation : MonoBehaviour
 {
     [SerializeField]private GameObject circle;
     [SerializeField]private GameObject linePrefab;
-    private LineRenderer lRend;
+    public LineRenderer lRend;
     [SerializeField]private int numLines;
     [SerializeField]private int minLines;
     [SerializeField]private float lineLength;
@@ -18,7 +18,7 @@ public class LineCreation : MonoBehaviour
     private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private GameObject newLineGen;
     private GameObject savedMon;
-    private string monName;
+    public string monName;
     // Start is called before the first frame update
     void Start()
     {
