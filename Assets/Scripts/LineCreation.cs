@@ -14,11 +14,8 @@ public class LineCreation : MonoBehaviour
     [SerializeField]private float minWidth;
     [SerializeField]private int eyeDis;
     [SerializeField]private int maxEyes;
-    [SerializeField]private int maxLetters;
-    private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private GameObject newLineGen;
     private GameObject savedMon;
-    public string monName;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,8 +50,6 @@ public class LineCreation : MonoBehaviour
         }
 
         PlaceEyes();
-
-        MakeName();
     }
 
     void PlaceEyes(){
@@ -66,16 +61,6 @@ public class LineCreation : MonoBehaviour
             var circ = Instantiate(circle, vec, Quaternion.identity);
             circ.transform.parent = lRend.GetComponent<Transform>();
         }
-    }
-
-    void MakeName(){
-        monName = "";
-        int numLet = Random.Range(4,maxLetters);
-        for(int i = 0; i < numLet; i++){
-            int ranNum = Random.Range(0,26);
-            monName += letters[ranNum];
-        }
-        Debug.Log(monName);
     }
 
     Gradient MakeGradient(){

@@ -5,7 +5,7 @@ using UnityEngine;
  public class SaveHexa: MonoBehaviour {
      //screenCaptureKey: Change this to any key you want. It is easily changeable in the editor
      public bool UseSimple = false;
-     private LineCreation line;
+     private StatsGenerator stats;
     //  void OnEnable() {
     //     var cam = Camera.main;
     //     // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
@@ -28,9 +28,9 @@ using UnityEngine;
             // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
             cam.cullingMask = LayerMask.GetMask("Default");
             
-            line = this.GetComponent<LineCreation>();
+            stats = this.GetComponent<StatsGenerator>();
     
-            string filename = string.Format("Assets/SavedHexamon/"+ line.monName +".png", 0);
+            string filename = string.Format("Assets/SavedHexamon/"+ stats.monName +".png", 0);
             Debug.Log("Mon Saved");
             int width = Screen.width;
             int height = Screen.height;

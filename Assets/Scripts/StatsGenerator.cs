@@ -6,13 +6,16 @@ public class StatsGenerator : MonoBehaviour
 {
     private string[] types = {"Stick","Gun","Garbage","Baseball","Proposal","Disaster","Writer","Analysis","Wedding","Night","Secretary","Actor","Contract","Platform","Guidance","Data","Philosophy","Customer","Attention","Power","Historian"};
     private string[] adjectives = {"Suspicous","Naive","Giant","Reflective","Dead","Rhetorical","Extra-Small","Consistent","Puny","Wary","Marvelous","Idiotic","Special","Materialistic","Realistic","Earthy","Grateful","Interesting","Public","Somber","Cuddly","Depressed"};
-    [SerializeField]private List<string> finalType = new List<string>();
-    [SerializeField]private int Attack;
+    public List<string> finalType = new List<string>();
+    public int Attack;
     
-    [SerializeField]private int Defense;
-    [SerializeField]private int Intelligence;
-    [SerializeField]private int Speed;
-    [SerializeField]private int Health;
+    public int Defense;
+    public int Intelligence;
+    public int Speed;
+    public int Health;
+    public string monName;
+    private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    [SerializeField]private int maxLetters;
     private LineCreation line;
     // Start is called before the first frame update
     void Start()
@@ -47,5 +50,16 @@ public class StatsGenerator : MonoBehaviour
         Intelligence = Random.Range(posCount,posCount * 5);
         Speed = Random.Range(posCount, posCount * 5);
         Health = Random.Range(posCount * 2, posCount * 10);
+        MakeName();
+    }
+
+    void MakeName(){
+        monName = "";
+        int numLet = Random.Range(4,maxLetters);
+        for(int i = 0; i < numLet; i++){
+            int ranNum = Random.Range(0,26);
+            monName += letters[ranNum];
+        }
+        Debug.Log(monName);
     }
 }
