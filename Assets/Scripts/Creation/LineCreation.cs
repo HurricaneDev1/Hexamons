@@ -15,7 +15,6 @@ public class LineCreation : MonoBehaviour
     [SerializeField]private int eyeDis;
     [SerializeField]private int maxEyes;
     private GameObject newLineGen;
-    private GameObject savedMon;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,12 +24,6 @@ public class LineCreation : MonoBehaviour
     void Update(){
         if(Input.GetKeyDown(KeyCode.J)){
             SetUpLines();
-        }
-        if(Input.GetKeyDown(KeyCode.K)){
-            savedMon = lRend.gameObject;
-        }
-        if(Input.GetKeyDown(KeyCode.L)){
-            SendOutMon();
         }
     }
 
@@ -82,10 +75,5 @@ public class LineCreation : MonoBehaviour
         (byte)UnityEngine.Random.Range(0, 255), //Blue
         255 //Alpha (transparency)
         );
-    }
-
-    void SendOutMon(){
-        Destroy(newLineGen);
-        Instantiate(savedMon,transform.position,Quaternion.identity);
     }
 }

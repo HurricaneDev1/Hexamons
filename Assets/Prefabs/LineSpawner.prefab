@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2193600150290582746}
   - component: {fileID: 2193600150290582749}
   - component: {fileID: 1999612777}
-  - component: {fileID: 1999612778}
+  - component: {fileID: 3750609901055927048}
   m_Layer: 0
   m_Name: LineSpawner
   m_TagString: Untagged
@@ -55,8 +55,6 @@ MonoBehaviour:
   minWidth: 2
   eyeDis: 20
   maxEyes: 3
-  maxLetters: 15
-  monName: 
 --- !u!114 &1999612777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +72,10 @@ MonoBehaviour:
   Defense: 0
   Intelligence: 0
   Speed: 0
-  line: {fileID: 2193600150290582749}
---- !u!114 &1999612778
+  Health: 0
+  monName: 
+  maxLetters: 10
+--- !u!114 &3750609901055927048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,3 +88,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseSimple: 0
+  filename: 

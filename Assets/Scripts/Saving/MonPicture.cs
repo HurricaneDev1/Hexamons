@@ -2,10 +2,11 @@ using UnityEngine;
  //System.IO;: You need this to find the files in your Directory
  using System.IO;
  
- public class SaveHexa: MonoBehaviour {
+ public class MonPicture: MonoBehaviour {
      //screenCaptureKey: Change this to any key you want. It is easily changeable in the editor
      public bool UseSimple = false;
      private StatsGenerator stats;
+     public string filename;
     //  void OnEnable() {
     //     var cam = Camera.main;
     //     // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
@@ -30,7 +31,7 @@ using UnityEngine;
             
             stats = this.GetComponent<StatsGenerator>();
     
-            string filename = string.Format("Assets/SavedHexamon/"+ stats.monName +".png", 0);
+            filename = string.Format("Assets/HexamonPictures/"+ stats.monName +".png", 0);
             Debug.Log("Mon Saved");
             int width = Screen.width;
             int height = Screen.height;
