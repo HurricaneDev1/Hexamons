@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 [System.Serializable]
 
 public class SaveMon 
@@ -6,10 +7,11 @@ public class SaveMon
     public string picturePath;
     public int attack;
     public int defense;
-    public int health;
+    public int maxHealth;
+    public int currentHealth;
     public int speed;
     public int intelligence;
     public string type1;
     public string type2;
-    public int sortOrder;
+    public List<Move> moves = new List<Move>();
 }

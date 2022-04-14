@@ -24,7 +24,8 @@ public class SaveStats : MonoBehaviour
 
     IEnumerator SetStats(){
         yield return new WaitForSeconds(0.1f);
-        mon.health = stats.Health;
+        mon.maxHealth = stats.Health;
+        mon.currentHealth = mon.maxHealth;
         mon.attack = stats.Attack;
         mon.defense = stats.Defense;
         mon.monName = stats.monName;
@@ -33,7 +34,6 @@ public class SaveStats : MonoBehaviour
         mon.type1 = stats.finalType[0];
         mon.type2 = stats.finalType[1];
         mon.picturePath = hex.filename;
-        mon.sortOrder = 0;
         Texture2D tex = LoadPNG(hex.filename);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
         picture.sprite = monPhoto;

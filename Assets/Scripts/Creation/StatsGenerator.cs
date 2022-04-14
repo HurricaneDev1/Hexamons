@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StatsGenerator : MonoBehaviour
 {
-    private string[] types = {"Stick","Gun","Garbage","Baseball","Proposal","Disaster","Writer","Analysis","Wedding","Night","Secretary","Actor","Contract","Platform","Guidance","Data","Philosophy","Customer","Attention","Power","Historian"};
-    private string[] adjectives = {"Suspicous","Naive","Giant","Reflective","Dead","Rhetorical","Extra-Small","Consistent","Puny","Wary","Marvelous","Idiotic","Special","Materialistic","Realistic","Earthy","Grateful","Interesting","Public","Somber","Cuddly","Depressed"};
+    private string[] types = {"Contracts","Wealth","Military","Trade","Land","Resources"};
+    private string[] adjectives = {"Idealism","Realism","Utopianism","Communism","Captilism","Socialism"};
     public List<string> finalType = new List<string>();
     public int Attack;
     
