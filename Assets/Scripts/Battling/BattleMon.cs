@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleMon: MonoBehaviour
+public class BattleMon: Typings
 {
     public SaveMon mon;
-    public Move recievingMove;
+    public BattleSystem bat;
 
     public void TakeDamage(int damage){
-        int finalDamage = 0;
-        if(recievingMove.isPhysical == true){
-            finalDamage = damage - mon.defense;
+        int finalDamage = TypeCheck(mon,damage,bat.selectedMove);
+        if(bat.selectedMove.isPhysical == true){
+            finalDamage = finalDamage - mon.defense;
         }else{
-            finalDamage = damage - mon.intelligence;
+            finalDamage = finalDamage - mon.intelligence;
         }
-        if(finalDamage <= 0)finalDamage = 1;
+        if(finalDamage < 0)finalDamage = 0;
         mon.currentHealth -= finalDamage;
     }
 }

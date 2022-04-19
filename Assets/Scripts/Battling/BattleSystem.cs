@@ -27,7 +27,7 @@ public class BattleSystem : MonoBehaviour
     [Header("Action/Move Stuff")]
     [SerializeField]private int actionNum = 0;
     [SerializeField]private int currentMove = 0;
-    [SerializeField]private Move selectedMove;
+    public Move selectedMove;
     [SerializeField]private Color highlight;
     [SerializeField]private bool playerFirst;
     // Start is called before the first frame update
@@ -166,17 +166,15 @@ public class BattleSystem : MonoBehaviour
     }
 
     int CalcDamage(){
-        int newDamage = 0;
-        if(selectedMove.Type == player.mon.type1 || selectedMove.Type == player.mon.type2){
-            newDamage = (int)(selectedMove.Damage * 1.5);
-        }else{
-            newDamage = selectedMove.Damage;
-        }
-
+        int newDamage = selectedMove.Damage;
         if(selectedMove.isPhysical == true){
             newDamage += player.mon.attack;
         }else{
             newDamage += player.mon.intelligence;
+        }
+
+        if(selectedMove.Type == player.mon.type1 || selectedMove.Type == player.mon.type2){
+            newDamage = (int)(newDamage * 1.5);
         }
         return newDamage;
     }

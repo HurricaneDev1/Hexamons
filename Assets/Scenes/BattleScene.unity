@@ -997,10 +997,10 @@ MonoBehaviour:
     speed: 15
     intelligence: 44
     type1: Egoism
-    type2: Wealth
+    type2: Capitalism
     moves:
     - MoveName: Inflated Ego
-      Damage: 5
+      Damage: 200
       Accuracy: 90
       NumHits: 2
       Type: Egoism
@@ -1014,10 +1014,10 @@ MonoBehaviour:
       isPhysical: 0
       Effect: 
     - MoveName: Throw Cash
-      Damage: 2
-      Accuracy: 40
-      NumHits: 5
-      Type: Wealth
+      Damage: 100
+      Accuracy: 100
+      NumHits: 1
+      Type: Capitalism
       isPhysical: 1
       Effect: 
     - MoveName: Kindness
@@ -1027,6 +1027,7 @@ MonoBehaviour:
       Type: Welfarism
       isPhysical: 1
       Effect: 
+  bat: {fileID: 1258550581}
 --- !u!4 &1023000965
 Transform:
   m_ObjectHideFlags: 0
@@ -1733,13 +1734,13 @@ MonoBehaviour:
     monName: hrw
     picturePath: 
     attack: 5
-    defense: 3
+    defense: 15
     maxHealth: 20
     currentHealth: 20
     speed: 4
     intelligence: 5
-    type1: 
-    type2: 
+    type1: Utopianism
+    type2: Pacifism
     moves:
     - MoveName: hitStuff
       Damage: 5
@@ -1748,6 +1749,7 @@ MonoBehaviour:
       Type: 
       isPhysical: 0
       Effect: 
+  bat: {fileID: 1258550581}
 --- !u!4 &1492723249
 Transform:
   m_ObjectHideFlags: 0
