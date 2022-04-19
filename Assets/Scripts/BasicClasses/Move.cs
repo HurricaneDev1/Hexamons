@@ -7,6 +7,7 @@ public class Move
     public int Accuracy;
     public int NumHits;
     public string Type;
+    public bool isPhysical;
 
     public string Effect;
 }
