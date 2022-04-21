@@ -8,6 +8,8 @@ public class Move
     public int NumHits;
     public string Type;
     public bool isPhysical;
-
-    public string Effect;
+    public string typeOfChange;
+    public float numChange;
+    public int effectChance;
+    public bool effectMe;
 }

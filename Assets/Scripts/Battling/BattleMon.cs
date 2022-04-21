@@ -7,12 +7,17 @@ public class BattleMon: Typings
     public SaveMon mon;
     public BattleSystem bat;
 
+    public float attackMod = 1;
+    public float defenseMod = 1;
+    public float intelligenceMod = 1;
+    public float speedMod = 1;
+
     public void TakeDamage(int damage){
         int finalDamage = TypeCheck(mon,damage,bat.selectedMove);
         if(bat.selectedMove.isPhysical == true){
-            finalDamage = finalDamage - mon.defense;
+            finalDamage = finalDamage - (int)(mon.defense * defenseMod);
         }else{
-            finalDamage = finalDamage - mon.intelligence;
+            finalDamage = finalDamage - (int)(mon.intelligence * intelligenceMod);
         }
         if(finalDamage < 0)finalDamage = 0;
         mon.currentHealth -= finalDamage;

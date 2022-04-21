@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class StatsGenerator : MonoBehaviour
 {
-    private string[] types = {};
-    private string[] adjectives = {"Idealism","Realism","Utopianism","Communism","Captilism","Socialism","Utilitarianism","Egoism","Intellectualism","Welfarism","Pacifism","Nepotism"};
+    private string[] types = {"Idealism","Realism","Utopianism","Communism","Captilism","Socialism","Utilitarianism","Egoism","Intellectualism","Welfarism","Pacifism","Nepotism"};
     public List<string> finalType = new List<string>();
     public int Attack;
     
@@ -36,10 +35,17 @@ public class StatsGenerator : MonoBehaviour
 
     List<string> ChooseType(){
         List<string> actualType = new List<string>();
-        int adjectiveSelection = Random.Range(0,adjectives.Length);
-        actualType.Add(adjectives[adjectiveSelection]);
-        int typeSelection = Random.Range(0,types.Length);
-        actualType.Add(types[typeSelection]);
+        int typeChoice = Random.Range(0,types.Length);
+        int twoTypes = Random.Range(0,2);
+        if(twoTypes == 1){
+            actualType.Add(types[typeChoice]);
+            typeChoice = Random.Range(0,types.Length);
+            if(actualType[0] != types[typeChoice]){
+                actualType.Add(types[typeChoice]);
+            }
+        }else{
+            actualType.Add(types[typeChoice]);
+        }
         return actualType;
     }
 

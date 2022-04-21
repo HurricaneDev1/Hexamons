@@ -119,10 +119,10 @@ public class BattleSystem : MonoBehaviour
         info[2].text = "Pow: " + selectedMove.Damage;
     }
     void SpeedCheck(){
-        if(player.mon.speed > enemy.mon.speed){
+        if(player.mon.speed * player.speedMod > enemy.mon.speed * player.speedMod){
             state = BattleState.Player;
             playerFirst = true;
-        }else if(player.mon.speed == enemy.mon.speed){
+        }else if(player.mon.speed * player.speedMod == enemy.mon.speed * enemy.speedMod){
             int speedTie = Random.Range(0,2);
             if(speedTie == 0){
                 playerFirst = true;
@@ -154,6 +154,7 @@ public class BattleSystem : MonoBehaviour
             if(selectedMove.Accuracy < hitChance){
                 battleText.text = player.mon.monName + " attack missed";
             }else{
+                StatChange();
                 enemy.TakeDamage(CalcDamage());
             }
             yield return new WaitForSeconds(0.2f);
@@ -169,13 +170,51 @@ public class BattleSystem : MonoBehaviour
         int newDamage = selectedMove.Damage;
         if(selectedMove.isPhysical == true){
             newDamage += player.mon.attack;
+            newDamage *= (int)player.attackMod;
         }else{
             newDamage += player.mon.intelligence;
+            newDamage *= (int)player.intelligenceMod;
         }
 
         if(selectedMove.Type == player.mon.type1 || selectedMove.Type == player.mon.type2){
             newDamage = (int)(newDamage * 1.5);
         }
         return newDamage;
+    }
+
+    void StatChange(){
+        int changeChance = Random.Range(0,101);
+        if(selectedMove.effectChance > changeChance){
+            switch(selectedMove.typeOfChange){
+            case "Attack":
+                if(selectedMove.effectMe == true){
+                    player.attackMod += selectedMove.numChange;
+                }else{
+                    enemy.attackMod += selectedMove.numChange;
+                }
+                break;
+            case "Defense":
+                if(selectedMove.effectMe == true){
+                    player.defenseMod += selectedMove.numChange;
+                }else{
+                    enemy.defenseMod += selectedMove.numChange;
+                }
+                break;
+            case "Intelligence":
+                if(selectedMove.effectMe == true){
+                    player.intelligenceMod += selectedMove.numChange;
+                }else{
+                    enemy.intelligenceMod += selectedMove.numChange;
+                }
+                break;
+            case "Speed":
+                if(selectedMove.effectMe == true){
+                    player.speedMod += selectedMove.numChange;
+                }else{
+                    enemy.speedMod += selectedMove.numChange;
+                }
+                break;
+        }
+        }
     }
 }

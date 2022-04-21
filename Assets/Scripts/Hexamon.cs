@@ -9,6 +9,10 @@ public class Hexamon : MonoBehaviour
     [SerializeField]private SpriteRenderer picture;
     [SerializeField]private float pictureSize;
 
+    [SerializeField]private float speed = 5f;
+ 
+    [SerializeField]private float height = 0.5f;
+
     void Start(){
         Texture2D tex = LoadPNG(monData.picturePath);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
@@ -27,5 +31,13 @@ public class Hexamon : MonoBehaviour
          tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
      }
      return tex;
- }
+    }
+
+    void Update(){
+        Vector2 pos = transform.position;
+
+        float newY = Mathf.Sin(Time.time * speed);
+
+        transform.position = new Vector3(pos.x, newY * height);
+    }
 }
