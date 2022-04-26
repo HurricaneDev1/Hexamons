@@ -13,14 +13,17 @@ public class StatsGenerator : MonoBehaviour
     public int Speed;
     public int Health;
     public string monName;
+    public List<Move> moves = new List<Move>();
     private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     [SerializeField]private int maxLetters;
     private LineCreation line;
+    private MoveGeneration moveGen;
     // Start is called before the first frame update
     void Start()
     {
         finalType = ChooseType();
-        line = this.GetComponent<LineCreation>();
+        line = GetComponent<LineCreation>();
+        moveGen = GetComponent<MoveGeneration>();
         MakeStats();
     }
 
@@ -30,10 +33,11 @@ public class StatsGenerator : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.J)){
             finalType = ChooseType();
             MakeStats();
+            moves = moveGen.MakeMoves();
         }
     }
 
-    List<string> ChooseType(){
+    public List<string> ChooseType(){
         List<string> actualType = new List<string>();
         int typeChoice = Random.Range(0,types.Length);
         int twoTypes = Random.Range(0,2);

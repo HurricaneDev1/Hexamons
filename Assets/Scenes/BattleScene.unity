@@ -1528,12 +1528,12 @@ MonoBehaviour:
   mon:
     monName: erwr
     picturePath: C:\Users\student\Documents\GitHub\Hexamons\Assets\HexamonPictures\fjnf
-    attack: 12
-    defense: 6
-    maxHealth: 20
-    currentHealth: 20
-    speed: 15
-    intelligence: 44
+    attack: 8
+    defense: 25
+    maxHealth: 200
+    currentHealth: 200
+    speed: 5
+    intelligence: 4
     type1: Egoism
     type2: Capitalism
     moves:
@@ -1611,7 +1611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monData:
     monName: fjnf
-    picturePath: C:\Users\hudso\OneDrive\Documents\GitHub\Hexamons\Assets\HexamonPictures\fjnf.png
+    picturePath: C:\Users\student\Documents\GitHub\Hexamons\Assets\HexamonPictures\fjnf.png
     attack: 12
     defense: 6
     maxHealth: 20
@@ -2849,24 +2849,54 @@ MonoBehaviour:
   mon:
     monName: hrw
     picturePath: 
-    attack: 5
-    defense: 40
+    attack: 23
+    defense: 32
     maxHealth: 200
     currentHealth: 200
-    speed: 4
+    speed: 10
     intelligence: 20
     type1: Utopianism
     type2: Pacifism
     moves:
-    - MoveName: hitStuff
-      Damage: 5
-      Accuracy: 40
-      NumHits: 10
-      Type: 
+    - MoveName: Trip
+      Damage: 20
+      Accuracy: 50
+      NumHits: 6
+      Type: Capitalism
+      isPhysical: 1
+      typeOfChange: Speed
+      numChange: 0.5
+      effectChance: 100
+      effectMe: 0
+    - MoveName: Peace
+      Damage: 150
+      Accuracy: 70
+      NumHits: 1
+      Type: Pacifism
+      isPhysical: 0
+      typeOfChange: Intelligence
+      numChange: 0.8
+      effectChance: 70
+      effectMe: 1
+    - MoveName: Why?
+      Damage: 60
+      Accuracy: 70
+      NumHits: 2
+      Type: Idealism
       isPhysical: 0
       typeOfChange: 
-      numChange: 0
-      effectChance: 0
+      numChange: 0.8
+      effectChance: 70
+      effectMe: 0
+    - MoveName: Kindness
+      Damage: 40
+      Accuracy: 80
+      NumHits: 4
+      Type: Utopianism
+      isPhysical: 0
+      typeOfChange: Attack
+      numChange: 1.2
+      effectChance: 20
       effectMe: 0
   bat: {fileID: 1258550581}
   healthBar: {fileID: 404473601}

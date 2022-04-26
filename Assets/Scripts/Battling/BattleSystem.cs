@@ -66,7 +66,7 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(PlayerAttack());
                 break;
             case BattleState.Enemy:
-                state = BattleState.SelectAction;
+                StartCoroutine(EnemyAttack());
                 break;
         }
     }
@@ -160,21 +160,21 @@ public class BattleSystem : MonoBehaviour
             if(selectedMove.Accuracy < hitChance){
                 battleText.text = player.mon.monName + " attack missed";
             }else{
-                StatChange();
-                enemy.TakeDamage(CalcDamage());
+                StatChange(selectedMove,player,enemy);
+                enemy.TakeDamage(CalcDamage(selectedMove));
             }
             yield return new WaitForSeconds(0.2f);
         }
-        if(playerFirst == false){
+        if(playerFirst == true){
             state = BattleState.Enemy;
         }else{
             state = BattleState.Start;
         }
     }
 
-    int CalcDamage(){
-        int newDamage = selectedMove.Damage;
-        if(selectedMove.isPhysical == true){
+    int CalcDamage(Move mo){
+        int newDamage = mo.Damage;
+        if(mo.isPhysical == true){
             newDamage += player.mon.attack;
             newDamage *= (int)player.attackMod;
         }else{
@@ -182,45 +182,70 @@ public class BattleSystem : MonoBehaviour
             newDamage *= (int)player.intelligenceMod;
         }
 
-        if(selectedMove.Type == player.mon.type1 || selectedMove.Type == player.mon.type2){
+        if(mo.Type == player.mon.type1 || mo.Type == player.mon.type2){
             newDamage = (int)(newDamage * 1.5);
         }
         return newDamage;
     }
 
-    void StatChange(){
+    void StatChange(Move mo, BattleMon good, BattleMon bad){
         int changeChance = Random.Range(0,101);
-        if(selectedMove.effectChance > changeChance){
-            switch(selectedMove.typeOfChange){
+        if(mo.effectChance > changeChance){
+            switch(mo.typeOfChange){
             case "Attack":
-                if(selectedMove.effectMe == true){
-                    player.attackMod *= selectedMove.numChange;
+                if(mo.effectMe == true){
+                    good.attackMod *= mo.numChange;
                 }else{
-                    enemy.attackMod *= selectedMove.numChange;
+                    bad.attackMod *= mo.numChange;
                 }
                 break;
             case "Defense":
-                if(selectedMove.effectMe == true){
-                    player.defenseMod *= selectedMove.numChange;
+                if(mo.effectMe == true){
+                    good.defenseMod *= mo.numChange;
                 }else{
-                    enemy.defenseMod *= selectedMove.numChange;
+                    bad.defenseMod *= mo.numChange;
                 }
                 break;
             case "Intelligence":
-                if(selectedMove.effectMe == true){
-                    player.intelligenceMod *= selectedMove.numChange;
+                if(mo.effectMe == true){
+                    good.intelligenceMod *= mo.numChange;
                 }else{
-                    enemy.intelligenceMod *= selectedMove.numChange;
+                    bad.intelligenceMod *= mo.numChange;
                 }
                 break;
             case "Speed":
-                if(selectedMove.effectMe == true){
-                    player.speedMod *= selectedMove.numChange;
+                if(mo.effectMe == true){
+                    good.speedMod *= mo.numChange;
                 }else{
-                    enemy.speedMod *= selectedMove.numChange;
+                    bad.speedMod *= mo.numChange;
                 }
                 break;
+            }
         }
+    }
+
+    IEnumerator EnemyAttack(){
+        List<Move> moves = enemy.mon.moves;
+        int moveSelect = Random.Range(0,4);
+        Move curMove = moves[moveSelect];
+        for(int i = 0; i < curMove.NumHits; i++){
+            state = BattleState.Wait;
+            int hitChance = Random.Range(0,101);
+            battleText.text = enemy.mon.monName + " used " + curMove.MoveName;
+            yield return new WaitForSeconds(0.3f);
+            if(curMove.Accuracy < hitChance){
+                battleText.text = enemy.mon.monName + " attack missed";
+            }else{
+                StatChange(curMove,enemy,player);
+                player.TakeDamage(CalcDamage(curMove));
+            }
+            yield return new WaitForSeconds(0.2f);
         }
+        if(playerFirst == false){
+            state = BattleState.Player;
+        }else{
+            state = BattleState.Start;
+        }
+        yield return new WaitForSeconds(1);
     }
 }
