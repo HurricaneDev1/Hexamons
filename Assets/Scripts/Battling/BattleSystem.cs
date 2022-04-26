@@ -10,6 +10,7 @@ public enum BattleState{
     SwapMon,
     Player,
     Enemy,
+    EnemyDead,
     Wait
 }
 
@@ -54,6 +55,11 @@ public class BattleSystem : MonoBehaviour
                 if(Input.GetKeyDown(KeyCode.Z)){
                     SpeedCheck();
                     ClearMoveText();
+                }
+                if(Input.GetKeyDown(KeyCode.X)){
+                    state = BattleState.SelectAction;
+                    ClearMoveText();
+                    SetUpActions();
                 }
                 break;
             case BattleState.Player:
@@ -188,30 +194,30 @@ public class BattleSystem : MonoBehaviour
             switch(selectedMove.typeOfChange){
             case "Attack":
                 if(selectedMove.effectMe == true){
-                    player.attackMod += selectedMove.numChange;
+                    player.attackMod *= selectedMove.numChange;
                 }else{
-                    enemy.attackMod += selectedMove.numChange;
+                    enemy.attackMod *= selectedMove.numChange;
                 }
                 break;
             case "Defense":
                 if(selectedMove.effectMe == true){
-                    player.defenseMod += selectedMove.numChange;
+                    player.defenseMod *= selectedMove.numChange;
                 }else{
-                    enemy.defenseMod += selectedMove.numChange;
+                    enemy.defenseMod *= selectedMove.numChange;
                 }
                 break;
             case "Intelligence":
                 if(selectedMove.effectMe == true){
-                    player.intelligenceMod += selectedMove.numChange;
+                    player.intelligenceMod *= selectedMove.numChange;
                 }else{
-                    enemy.intelligenceMod += selectedMove.numChange;
+                    enemy.intelligenceMod *= selectedMove.numChange;
                 }
                 break;
             case "Speed":
                 if(selectedMove.effectMe == true){
-                    player.speedMod += selectedMove.numChange;
+                    player.speedMod *= selectedMove.numChange;
                 }else{
-                    enemy.speedMod += selectedMove.numChange;
+                    enemy.speedMod *= selectedMove.numChange;
                 }
                 break;
         }

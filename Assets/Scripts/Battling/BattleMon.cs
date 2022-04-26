@@ -6,6 +6,7 @@ public class BattleMon: Typings
 {
     public SaveMon mon;
     public BattleSystem bat;
+    [SerializeField]private Transform healthBar;
 
     public float attackMod = 1;
     public float defenseMod = 1;
@@ -21,5 +22,21 @@ public class BattleMon: Typings
         }
         if(finalDamage < 0)finalDamage = 0;
         mon.currentHealth -= finalDamage;
+        CheckDeath();
+        SetSize();
+    }
+
+    void SetSize(){
+        float monMax = mon.maxHealth;
+        float monCur = mon.currentHealth;
+        float finalSize = monCur/monMax * 0.85f;
+        healthBar.localScale = new Vector3(finalSize,healthBar.localScale.y);
+    }
+
+    void CheckDeath(){
+        if(mon.currentHealth <= 0){
+            bat.state = BattleState.EnemyDead;
+            mon.currentHealth = 0;
+        }
     }
 }

@@ -6,6 +6,8 @@ using System.IO;
 public class Hexamon : MonoBehaviour
 {
     public SaveMon monData;
+    public BattleSystem bat;
+    [SerializeField]private Transform healthBar;
     [SerializeField]private SpriteRenderer picture;
     [SerializeField]private float pictureSize;
 
@@ -34,10 +36,17 @@ public class Hexamon : MonoBehaviour
     }
 
     void Update(){
-        Vector2 pos = transform.position;
+        if(bat.state == BattleState.SelectAction || bat.state == BattleState.SelectMove){
+            Bob(transform);
+            Bob(healthBar);
+        }
+    }
+
+    void Bob(Transform trans){
+        Vector2 pos = trans.position;
 
         float newY = Mathf.Sin(Time.time * speed);
 
-        transform.position = new Vector3(pos.x, newY * height);
+        trans.position = new Vector3(pos.x, newY * height);
     }
 }
