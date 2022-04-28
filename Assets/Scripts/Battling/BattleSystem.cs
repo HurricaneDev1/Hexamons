@@ -10,6 +10,7 @@ public enum BattleState{
     SwapMon,
     Player,
     Enemy,
+    PlayerDead,
     EnemyDead,
     Wait
 }
@@ -20,7 +21,9 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public BattleMon enemy;
     public BattleMon player;
+    public List<SaveMon> enemies = new List<SaveMon>();
     [Header("Text")]
+    [SerializeField]private TextMeshProUGUI nameText;
     [SerializeField]private TextMeshProUGUI battleText;
     [SerializeField]private List<TextMeshProUGUI> info = new List<TextMeshProUGUI>();
     [SerializeField]private List<TextMeshProUGUI> actionText = new List<TextMeshProUGUI>();
@@ -39,6 +42,7 @@ public class BattleSystem : MonoBehaviour
     void Update(){
         switch(state){
             case BattleState.Start:
+                nameText.text = player.mon.monName;
                 SetUpActions();
                 break;
             case BattleState.SelectAction:
@@ -67,6 +71,11 @@ public class BattleSystem : MonoBehaviour
                 break;
             case BattleState.Enemy:
                 StartCoroutine(EnemyAttack());
+                break;
+            case BattleState.EnemyDead:
+                EnemyDie();
+                break;
+            case BattleState.PlayerDead:
                 break;
         }
     }
@@ -161,28 +170,28 @@ public class BattleSystem : MonoBehaviour
                 battleText.text = player.mon.monName + " attack missed";
             }else{
                 StatChange(selectedMove,player,enemy);
-                enemy.TakeDamage(CalcDamage(selectedMove));
+                enemy.TakeDamage(CalcDamage(selectedMove,player));
             }
             yield return new WaitForSeconds(0.2f);
         }
-        if(playerFirst == true){
+        if(playerFirst == true && state == BattleState.Wait){
             state = BattleState.Enemy;
-        }else{
+        }else if(state == BattleState.Wait){
             state = BattleState.Start;
         }
     }
 
-    int CalcDamage(Move mo){
+    int CalcDamage(Move mo, BattleMon mon){
         int newDamage = mo.Damage;
         if(mo.isPhysical == true){
-            newDamage += player.mon.attack;
-            newDamage *= (int)player.attackMod;
+            newDamage += mon.mon.attack;
+            newDamage *= (int)mon.attackMod;
         }else{
-            newDamage += player.mon.intelligence;
-            newDamage *= (int)player.intelligenceMod;
+            newDamage += mon.mon.intelligence;
+            newDamage *= (int)mon.intelligenceMod;
         }
 
-        if(mo.Type == player.mon.type1 || mo.Type == player.mon.type2){
+        if(mo.Type == mon.mon.type1 || mo.Type == mon.mon.type2){
             newDamage = (int)(newDamage * 1.5);
         }
         return newDamage;
@@ -237,15 +246,19 @@ public class BattleSystem : MonoBehaviour
                 battleText.text = enemy.mon.monName + " attack missed";
             }else{
                 StatChange(curMove,enemy,player);
-                player.TakeDamage(CalcDamage(curMove));
+                player.TakeDamage(CalcDamage(curMove,enemy));
             }
             yield return new WaitForSeconds(0.2f);
         }
-        if(playerFirst == false){
+        if(playerFirst == false && state == BattleState.Wait){
             state = BattleState.Player;
-        }else{
+        }else if(state == BattleState.Wait){
             state = BattleState.Start;
         }
         yield return new WaitForSeconds(1);
+    }
+
+    void EnemyDie(){
+        
     }
 }

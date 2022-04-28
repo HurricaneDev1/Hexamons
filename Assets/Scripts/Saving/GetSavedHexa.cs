@@ -7,7 +7,8 @@ public class GetSavedHexa : MonoBehaviour
 {
     private static string directory = "/MonSaveData/";
     public List<SaveMon> mons = new List<SaveMon>();
-    [SerializeField]private GameObject monPrefab;
+    [SerializeField]private BattleMon battleMon;
+    [SerializeField]private Hexamon hex;
     // Update is called once per frame
     void Start()
     {
@@ -28,15 +29,7 @@ public class GetSavedHexa : MonoBehaviour
     }
 
     void SpawnMons(){
-        foreach(SaveMon mo in mons){
-            GameObject spawnedMon = Instantiate(monPrefab,transform.position,Quaternion.identity);
-            spawnedMon.GetComponent<Hexamon>().monData = mo;
-            GetSavedHexa get = FindObjectOfType<GetSavedHexa>();
-            spawnedMon.transform.SetParent(get.transform);
-        }
-    }
-
-    void SortMons(){
-
+        battleMon.mon = mons[0];
+        hex.monData = mons[0];
     }
 }

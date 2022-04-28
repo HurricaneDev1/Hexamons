@@ -7,6 +7,7 @@ public class BattleMon: Typings
     public SaveMon mon;
     public BattleSystem bat;
     [SerializeField]private Transform healthBar;
+    [SerializeField]private bool isEnemy;
 
     public float attackMod = 1;
     public float defenseMod = 1;
@@ -20,7 +21,7 @@ public class BattleMon: Typings
         }else{
             finalDamage = finalDamage - (int)(mon.intelligence * intelligenceMod);
         }
-        if(finalDamage < 0)finalDamage = 0;
+        if(finalDamage < 0)finalDamage = 1;
         mon.currentHealth -= finalDamage;
         CheckDeath();
         SetSize();
@@ -35,7 +36,11 @@ public class BattleMon: Typings
 
     void CheckDeath(){
         if(mon.currentHealth <= 0){
-            bat.state = BattleState.EnemyDead;
+            if(isEnemy){
+                bat.state = BattleState.EnemyDead;
+            }else{
+                bat.state = BattleState.PlayerDead;
+            }
             mon.currentHealth = 0;
         }
     }

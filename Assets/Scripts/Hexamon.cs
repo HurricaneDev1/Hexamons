@@ -16,6 +16,11 @@ public class Hexamon : MonoBehaviour
     [SerializeField]private float height = 0.5f;
 
     void Start(){
+        StartCoroutine(SetUpPicture());
+    }
+
+    IEnumerator SetUpPicture(){
+        yield return new WaitForSeconds(0.1f);
         Texture2D tex = LoadPNG(monData.picturePath);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
         picture.sprite = monPhoto;

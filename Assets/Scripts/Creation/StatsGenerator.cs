@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StatsGenerator : MonoBehaviour
 {
-    private string[] types = {"Idealism","Realism","Utopianism","Communism","Captilism","Socialism","Utilitarianism","Egoism","Intellectualism","Welfarism","Pacifism","Nepotism"};
+    private string[] types = {"Idealism","Realism","Utopianism","Communism","Capitalism","Socialism","Utilitarianism","Egoism","Intellectualism","Welfarism","Pacifism","Nepotism"};
     public List<string> finalType = new List<string>();
     public int Attack;
     
@@ -24,7 +24,9 @@ public class StatsGenerator : MonoBehaviour
         finalType = ChooseType();
         line = GetComponent<LineCreation>();
         moveGen = GetComponent<MoveGeneration>();
+        finalType = ChooseType();
         MakeStats();
+        moves = moveGen.MakeMoves();
     }
 
     // Update is called once per frame

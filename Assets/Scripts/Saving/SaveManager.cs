@@ -8,6 +8,7 @@ public static class SaveManager
     public static void Save(SaveMon mon){
         fileName = mon.monName + ".txt";
         string dir = Application.persistentDataPath + directory;
+        Debug.Log(dir);
 
         if(!Directory.Exists(dir)){
             Directory.CreateDirectory(dir);

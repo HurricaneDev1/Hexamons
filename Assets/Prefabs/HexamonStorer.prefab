@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8052525787872581240}
   - component: {fileID: 8052525787872581241}
   - component: {fileID: 8052525787872581246}
-  - component: {fileID: 8052525787911697719}
   m_Layer: 0
   m_Name: HexamonStorer
   m_TagString: Untagged
@@ -101,25 +100,14 @@ MonoBehaviour:
     picturePath: 
     attack: 0
     defense: 0
-    health: 0
+    maxHealth: 0
+    currentHealth: 0
     speed: 0
     intelligence: 0
     type1: 
     type2: 
+    moves: []
   stats: {fileID: 0}
   hex: {fileID: 0}
   picture: {fileID: 8052525787872581241}
   pictureSize: 8
---- !u!114 &8052525787911697719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8052525787872581247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601dcc7b1b6789141970d142c319b5ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mons: []
