@@ -27,6 +27,7 @@ public class LineCreation : MonoBehaviour
         }
     }
 
+    //Makes random lines going random directions with a random gradient
     void SetUpLines(){
         if(newLineGen != null){
             Destroy(newLineGen);
@@ -45,6 +46,7 @@ public class LineCreation : MonoBehaviour
         PlaceEyes();
     }
 
+    //Places eyes on the hexamon in similarish places
     void PlaceEyes(){
         int numEyes = Random.Range(1,maxEyes);
         for(int j = 0; j < numEyes; j++){
@@ -56,6 +58,7 @@ public class LineCreation : MonoBehaviour
         }
     }
 
+    //Makes a gradient
     Gradient MakeGradient(){
         Gradient gradient = new Gradient();
         float alpha = 1.0f;
@@ -68,6 +71,7 @@ public class LineCreation : MonoBehaviour
         return gradient;
     }
 
+    //Makes a color
     Color32 MakeColor(){
         return new Color32(
         (byte)UnityEngine.Random.Range(0, 255), //Red

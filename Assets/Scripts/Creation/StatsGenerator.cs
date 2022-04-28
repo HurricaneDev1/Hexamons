@@ -39,6 +39,7 @@ public class StatsGenerator : MonoBehaviour
         }
     }
 
+    //Randomly sets the type of the hexamon
     public List<string> ChooseType(){
         List<string> actualType = new List<string>();
         int typeChoice = Random.Range(0,types.Length);
@@ -55,6 +56,7 @@ public class StatsGenerator : MonoBehaviour
         return actualType;
     }
 
+    //Sets attack and other stats
     void MakeStats(){
         int posCount = line.lRend.positionCount;
         Attack = Random.Range(posCount, posCount * 5);
@@ -65,6 +67,7 @@ public class StatsGenerator : MonoBehaviour
         MakeName();
     }
 
+    //Randomly puts leters together to create a name
     void MakeName(){
         monName = "";
         int numLet = Random.Range(4,maxLetters);

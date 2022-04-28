@@ -14,6 +14,7 @@ public class BattleMon: Typings
     public float intelligenceMod = 1;
     public float speedMod = 1;
 
+    //Calculates typing and defense then deals damage accodingly
     public void TakeDamage(int damage){
         int finalDamage = TypeCheck(mon,damage,bat.selectedMove);
         if(bat.selectedMove.isPhysical == true){
@@ -27,13 +28,15 @@ public class BattleMon: Typings
         SetSize();
     }
 
-    void SetSize(){
+    //Adjusts the size of the health bar
+    public void SetSize(){
         float monMax = mon.maxHealth;
         float monCur = mon.currentHealth;
         float finalSize = monCur/monMax * 0.85f;
         healthBar.localScale = new Vector3(finalSize,healthBar.localScale.y);
     }
 
+    //Sees if the mon is dead
     void CheckDeath(){
         if(mon.currentHealth <= 0){
             if(isEnemy){

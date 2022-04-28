@@ -19,7 +19,8 @@ public class Hexamon : MonoBehaviour
         StartCoroutine(SetUpPicture());
     }
 
-    IEnumerator SetUpPicture(){
+    //Gets a mons picture path then sets up the picture from their
+    public IEnumerator SetUpPicture(){
         yield return new WaitForSeconds(0.1f);
         Texture2D tex = LoadPNG(monData.picturePath);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
@@ -27,6 +28,7 @@ public class Hexamon : MonoBehaviour
         transform.localScale = new Vector2(transform.localScale.x * pictureSize,transform.localScale.y * pictureSize);
     }
 
+    //Converts picture file to a texture
     public static Texture2D LoadPNG(string filePath) {
  
      Texture2D tex = null;
@@ -41,12 +43,14 @@ public class Hexamon : MonoBehaviour
     }
 
     void Update(){
+        //Moves the player and health bar up and down
         if(bat.state == BattleState.SelectAction || bat.state == BattleState.SelectMove){
             Bob(transform);
             Bob(healthBar);
         }
     }
 
+    //Makes stuff go up and down
     void Bob(Transform trans){
         Vector2 pos = trans.position;
 

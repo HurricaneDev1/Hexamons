@@ -21,6 +21,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public BattleMon enemy;
     public BattleMon player;
+    public GetSavedHexa get;
     public List<SaveMon> enemies = new List<SaveMon>();
     [Header("Text")]
     [SerializeField]private TextMeshProUGUI nameText;
@@ -30,6 +31,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]private List<TextMeshProUGUI> moveTexts = new List<TextMeshProUGUI>();
     [Header("Action/Move Stuff")]
     [SerializeField]private int actionNum = 0;
+    [SerializeField]private int currentMon = 0;
     [SerializeField]private int currentMove = 0;
     public Move selectedMove;
     [SerializeField]private Color highlight;
@@ -40,6 +42,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
     }
     void Update(){
+        //State machine to see what to do next
         switch(state){
             case BattleState.Start:
                 nameText.text = player.mon.monName;
@@ -66,6 +69,12 @@ public class BattleSystem : MonoBehaviour
                     SetUpActions();
                 }
                 break;
+            case BattleState.SwapMon:
+                ChooseMon();
+                if(Input.GetKeyDown(KeyCode.Z)){
+                    SwapMon();
+                }
+                break;
             case BattleState.Player:
                 StartCoroutine(PlayerAttack());
                 break;
@@ -73,12 +82,13 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(EnemyAttack());
                 break;
             case BattleState.EnemyDead:
-                EnemyDie();
+                state = BattleState.Start;
                 break;
             case BattleState.PlayerDead:
                 break;
         }
     }
+    //Enables text and changes the battlestate
     void SetUpActions(){
         battleText.enabled = false;
         foreach(TextMeshProUGUI g in actionText){
@@ -86,7 +96,7 @@ public class BattleSystem : MonoBehaviour
         }
         state = BattleState.SelectAction;
     }
-
+    //Lets you choose which action you would like to do
     void SelectAction(){
         if(Input.GetKeyDown(KeyCode.UpArrow)){
             if(actionNum > 0)
@@ -101,6 +111,37 @@ public class BattleSystem : MonoBehaviour
         }
         actionText[actionNum].color = highlight;
     }
+    //Select which mon you want to switch into
+    void ChooseMon(){
+        if(Input.GetKeyDown(KeyCode.UpArrow)){
+            if(currentMon > 0)
+                currentMon --;
+        }
+        if(Input.GetKeyDown(KeyCode.DownArrow)){
+            if(currentMon < get.mons.Count - 1)
+                currentMon ++;
+        }
+    }
+    //Switches the hexamon in battle and changes stuff to fit it
+    void SwapMon(){
+        player.mon = get.mons[currentMon];
+        Hexamon hex = player.GetComponent<Hexamon>();
+        hex.monData = get.mons[currentMon];
+        StartCoroutine(hex.SetUpPicture());
+        nameText.text = player.mon.monName;
+        player.SetSize();
+        player.attackMod = 1;
+        player.speedMod = 1;
+        player.intelligenceMod = 1;
+        player.defenseMod = 1;
+        foreach(TextMeshProUGUI g in actionText){
+            g.enabled = false;
+        }
+        battleText.enabled = true;
+        playerFirst = true;
+        state = BattleState.Enemy;
+    }
+    //Enables moves and disables action text
     void SetUpMoves(List<Move> mo){
         state = BattleState.SelectMove;
         for(int i = 0; i < moveTexts.Count; i++){
@@ -110,6 +151,7 @@ public class BattleSystem : MonoBehaviour
             g.enabled = false;
         }
     }
+    //Selects which move you want to use
     void MoveSelection(List<Move> moves){
         if(Input.GetKeyDown(KeyCode.UpArrow)){
             if(currentMove != 0)
@@ -133,6 +175,7 @@ public class BattleSystem : MonoBehaviour
         info[1].text = selectedMove.Accuracy + "%";
         info[2].text = "Pow: " + selectedMove.Damage;
     }
+    //Checks to see who goes first based on speed
     void SpeedCheck(){
         if(player.mon.speed * player.speedMod > enemy.mon.speed * player.speedMod){
             state = BattleState.Player;
@@ -152,6 +195,7 @@ public class BattleSystem : MonoBehaviour
         }
         battleText.enabled = true;
     }
+    //Gets rid of move text and info text
     void ClearMoveText(){
         foreach(TextMeshProUGUI g in moveTexts){
             g.enabled = false;
@@ -160,6 +204,7 @@ public class BattleSystem : MonoBehaviour
         info[1].text = "";
         info[2].text = "";
     }
+    //Attacks the enemy 
     IEnumerator PlayerAttack(){
         for(int i = 0; i < selectedMove.NumHits; i++){
             state = BattleState.Wait;
@@ -181,6 +226,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    //Calculates stab and stats afffect on attack
     int CalcDamage(Move mo, BattleMon mon){
         int newDamage = mo.Damage;
         if(mo.isPhysical == true){
@@ -197,6 +243,7 @@ public class BattleSystem : MonoBehaviour
         return newDamage;
     }
 
+    //Changes a hexamons stat modifiers based on a move
     void StatChange(Move mo, BattleMon good, BattleMon bad){
         int changeChance = Random.Range(0,101);
         if(mo.effectChance > changeChance){
@@ -233,6 +280,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    //Enemy randomly chooses move and attacks
     IEnumerator EnemyAttack(){
         List<Move> moves = enemy.mon.moves;
         int moveSelect = Random.Range(0,4);

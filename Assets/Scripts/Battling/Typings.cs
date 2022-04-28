@@ -36,6 +36,7 @@ public class Typings : MonoBehaviour
     }
 
     void TypeTables(string type){
+        //Case machine to test typings
         switch(type){
             case "Idealism":
                 noDamage = new List<string>(){Rea};

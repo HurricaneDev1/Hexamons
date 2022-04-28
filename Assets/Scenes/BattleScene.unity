@@ -1506,6 +1506,7 @@ GameObject:
   - component: {fileID: 1023000964}
   - component: {fileID: 1023000966}
   - component: {fileID: 1023000967}
+  - component: {fileID: 1023000968}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1579,6 +1580,7 @@ MonoBehaviour:
       effectMe: 0
   bat: {fileID: 1258550581}
   healthBar: {fileID: 1942204733}
+  isEnemy: 0
   attackMod: 1
   defenseMod: 1
   intelligenceMod: 1
@@ -1718,6 +1720,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1023000968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023000963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601dcc7b1b6789141970d142c319b5ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mons: []
+  battleMon: {fileID: 1023000964}
+  hex: {fileID: 1023000966}
 --- !u!1 &1050068223
 GameObject:
   m_ObjectHideFlags: 0
@@ -2092,7 +2109,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1258550580}
   - component: {fileID: 1258550581}
-  - component: {fileID: 1258550582}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -2129,6 +2145,8 @@ MonoBehaviour:
   state: 0
   enemy: {fileID: 1492723248}
   player: {fileID: 1023000964}
+  get: {fileID: 1023000968}
+  enemies: []
   nameText: {fileID: 1357681390}
   battleText: {fileID: 379932700}
   info:
@@ -2144,6 +2162,7 @@ MonoBehaviour:
   - {fileID: 269986247}
   - {fileID: 1277722033}
   actionNum: 0
+  currentMon: 0
   currentMove: 0
   selectedMove:
     MoveName: 
@@ -2158,21 +2177,6 @@ MonoBehaviour:
     effectMe: 0
   highlight: {r: 0, g: 0.54901963, b: 0.45828024, a: 1}
   playerFirst: 0
---- !u!114 &1258550582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258550579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601dcc7b1b6789141970d142c319b5ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mons: []
-  battleMon: {fileID: 1023000964}
-  hex: {fileID: 1023000966}
 --- !u!1 &1277722031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,8 +2872,8 @@ MonoBehaviour:
     picturePath: 
     attack: 23
     defense: 32
-    maxHealth: 200
-    currentHealth: 200
+    maxHealth: 20000000
+    currentHealth: 20000000
     speed: 10
     intelligence: 20
     type1: Utopianism
@@ -2917,6 +2921,7 @@ MonoBehaviour:
       effectMe: 0
   bat: {fileID: 1258550581}
   healthBar: {fileID: 404473601}
+  isEnemy: 1
   attackMod: 1
   defenseMod: 1
   intelligenceMod: 1
