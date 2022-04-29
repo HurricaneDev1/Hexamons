@@ -23,6 +23,8 @@ public class BattleSystem : MonoBehaviour
     public BattleMon player;
     public GetSavedHexa get;
     public List<SaveMon> enemies = new List<SaveMon>();
+    [SerializeField]private GameObject battleUI;
+    [SerializeField]private GameObject monSelection;
     [Header("Text")]
     [SerializeField]private TextMeshProUGUI nameText;
     [SerializeField]private TextMeshProUGUI battleText;
@@ -31,10 +33,10 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]private List<TextMeshProUGUI> moveTexts = new List<TextMeshProUGUI>();
     [Header("Action/Move Stuff")]
     [SerializeField]private int actionNum = 0;
-    [SerializeField]private int currentMon = 0;
+    public int currentMon = 0;
     [SerializeField]private int currentMove = 0;
     public Move selectedMove;
-    [SerializeField]private Color highlight;
+    public Color highlight;
     [SerializeField]private bool playerFirst;
     // Start is called before the first frame update
     void Start()
@@ -51,10 +53,13 @@ public class BattleSystem : MonoBehaviour
             case BattleState.SelectAction:
                 SelectAction();
                 if(Input.GetKeyDown(KeyCode.Z)){
-                    if(actionNum == 0)
+                    if(actionNum == 0){
                         SetUpMoves(player.mon.moves);
-                    if(actionNum == 1)
+                    }else if(actionNum == 1){
                         state = BattleState.SwapMon;
+                        SetUpSwap();
+                        get.SpawnMons();
+                    }
                 }
                 break;
             case BattleState.SelectMove:    
@@ -73,6 +78,12 @@ public class BattleSystem : MonoBehaviour
                 ChooseMon();
                 if(Input.GetKeyDown(KeyCode.Z)){
                     SwapMon();
+                    StopSwap();
+                }
+                if(Input.GetKeyDown(KeyCode.X)){
+                    state = BattleState.SelectAction;
+                    StopSwap();
+                    SetUpActions();
                 }
                 break;
             case BattleState.Player:
@@ -110,6 +121,21 @@ public class BattleSystem : MonoBehaviour
             g.color = Color.black;   
         }
         actionText[actionNum].color = highlight;
+    }
+
+    void SetUpSwap(){
+        battleUI.SetActive(false);
+        monSelection.SetActive(true);
+    }
+
+    void StopSwap(){
+        battleUI.SetActive(true);
+        monSelection.SetActive(false);
+        int amount = get.nameTexts.Count;
+        for(int t  = amount; t > 0; t--){
+            Destroy(get.nameTexts[t-1].gameObject);
+            get.nameTexts.Remove(get.nameTexts[t-1]);
+        }
     }
     //Select which mon you want to switch into
     void ChooseMon(){

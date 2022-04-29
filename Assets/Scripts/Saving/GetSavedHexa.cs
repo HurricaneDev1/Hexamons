@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 public class GetSavedHexa : MonoBehaviour
 {
@@ -9,13 +10,28 @@ public class GetSavedHexa : MonoBehaviour
     public List<SaveMon> mons = new List<SaveMon>();
     [SerializeField]private BattleMon battleMon;
     [SerializeField]private Hexamon hex;
-    // Update is called once per frame
+    [SerializeField]private Transform textSpawn;
+    [SerializeField]private TextMeshProUGUI monName;
+    [SerializeField]private BattleSystem bat;
+    [SerializeField]private Transform monSelection;
+    public List<TextMeshProUGUI> nameTexts = new List<TextMeshProUGUI>();
     void Start()
     {
         mons = GetMons();
-        SpawnMons();
+        hex.monData = mons[0];
     }
 
+    void Update(){
+        if(bat.state == BattleState.SwapMon){
+            for(int t = 0; t < nameTexts.Count; t++){
+                if(t != bat.currentMon){
+                    nameTexts[t].color = Color.black;
+                }else{
+                    nameTexts[bat.currentMon].color = bat.highlight;
+                }
+            }
+        }
+    }
     List<SaveMon> GetMons(){
         string dir = Application.persistentDataPath + directory;
         string[] monFiles = Directory.GetFiles(dir);
@@ -28,8 +44,13 @@ public class GetSavedHexa : MonoBehaviour
         return mo;
     }
 
-    void SpawnMons(){
-        battleMon.mon = mons[0];
-        hex.monData = mons[0];
+    public void SpawnMons(){
+        for(int i = 0; i < mons.Count; i++){
+            TextMeshProUGUI text = Instantiate(monName,new Vector3(textSpawn.position.x,textSpawn.position.y - i),Quaternion.identity);
+            text.text = mons[i].monName;
+            text.transform.SetParent(monSelection,true);
+            text.rectTransform.localScale = new Vector3(2,2,2);
+            nameTexts.Add(text);
+        }
     }
 }
