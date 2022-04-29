@@ -14,11 +14,13 @@ public class GetSavedHexa : MonoBehaviour
     [SerializeField]private TextMeshProUGUI monName;
     [SerializeField]private BattleSystem bat;
     [SerializeField]private Transform monSelection;
+    public List<TextMeshProUGUI> info = new List<TextMeshProUGUI>();
     public List<TextMeshProUGUI> nameTexts = new List<TextMeshProUGUI>();
     void Start()
     {
         mons = GetMons();
         hex.monData = mons[0];
+        battleMon.mon = mons[0];
     }
 
     void Update(){
@@ -30,6 +32,7 @@ public class GetSavedHexa : MonoBehaviour
                     nameTexts[bat.currentMon].color = bat.highlight;
                 }
             }
+            UpdateInfo();
         }
     }
     List<SaveMon> GetMons(){
@@ -53,4 +56,19 @@ public class GetSavedHexa : MonoBehaviour
             nameTexts.Add(text);
         }
     }
+
+    void UpdateInfo(){
+        hex.monData = mons[bat.currentMon];
+        StartCoroutine(hex.SetUpPicture());
+        info[0].text = "Attack:" + hex.monData.attack.ToString();
+        info[1].text = "Defense:" + hex.monData.defense.ToString();
+        info[2].text = "Speed:" + hex.monData.speed.ToString();
+        info[3].text = "Intelligence:" + hex.monData.intelligence.ToString();
+        info[4].text = "Health:" + hex.monData.maxHealth.ToString() + "/" + hex.monData.currentHealth.ToString();
+        if(hex.monData.type2 != ""){
+            info[5].text = hex.monData.type1 + "/" + hex.monData.type2;
+        }else{
+            info[5].text = hex.monData.type1;
+        }
+    }   
 }

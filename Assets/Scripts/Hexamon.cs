@@ -21,7 +21,7 @@ public class Hexamon : MonoBehaviour
 
     //Gets a mons picture path then sets up the picture from their
     public IEnumerator SetUpPicture(){
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
         Texture2D tex = LoadPNG(monData.picturePath);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
         picture.sprite = monPhoto;
