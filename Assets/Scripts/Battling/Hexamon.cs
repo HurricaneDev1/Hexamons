@@ -25,7 +25,7 @@ public class Hexamon : MonoBehaviour
         Texture2D tex = LoadPNG(monData.picturePath);
         Sprite monPhoto = Sprite.Create(tex,new Rect(0,0,tex.width,tex.height),new Vector2(0.5f,0.5f));
         picture.sprite = monPhoto;
-        transform.localScale = new Vector2(transform.localScale.x * pictureSize,transform.localScale.y * pictureSize);
+        transform.localScale = new Vector2(pictureSize,pictureSize);
     }
 
     //Converts picture file to a texture
@@ -56,6 +56,6 @@ public class Hexamon : MonoBehaviour
 
         float newY = Mathf.Sin(Time.time * speed);
 
-        trans.position = new Vector3(pos.x, newY * height);
+        trans.position = new Vector3(pos.x, pos.y + newY * height);
     }
 }

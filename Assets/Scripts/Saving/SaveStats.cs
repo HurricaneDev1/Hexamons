@@ -11,6 +11,9 @@ public class SaveStats : MonoBehaviour
     [SerializeField]private SpriteRenderer picture;
     [SerializeField]private float pictureSize;
 
+    void Start(){
+        StartCoroutine(SetStats());
+    }
     // Update is called once per frame
     void Update()
     {
@@ -23,7 +26,7 @@ public class SaveStats : MonoBehaviour
     }
 
     IEnumerator SetStats(){
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
         mon.maxHealth = stats.Health;
         mon.currentHealth = mon.maxHealth;
         mon.attack = stats.Attack;
@@ -38,7 +41,7 @@ public class SaveStats : MonoBehaviour
             mon.type2 = "";
         }
         mon.moves = stats.moves;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         mon.picturePath = hex.filename;
         SaveManager.Save(mon);
     }

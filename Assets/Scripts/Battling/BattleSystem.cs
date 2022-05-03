@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public enum BattleState{
@@ -22,12 +23,15 @@ public class BattleSystem : MonoBehaviour
     public BattleMon enemy;
     public BattleMon player;
     public GetSavedHexa get;
+    public Enemy en;
     public List<SaveMon> enemies = new List<SaveMon>();
     [SerializeField]private GameObject battleUI;
     [SerializeField]private GameObject monSelection;
     [Header("Text")]
     [SerializeField]private TextMeshProUGUI nameText;
+    [SerializeField]private TextMeshProUGUI enemyNameText;
     [SerializeField]private TextMeshProUGUI battleText;
+    public TextMeshProUGUI healthPercentageText;
     [SerializeField]private List<TextMeshProUGUI> info = new List<TextMeshProUGUI>();
     [SerializeField]private List<TextMeshProUGUI> actionText = new List<TextMeshProUGUI>();
     [SerializeField]private List<TextMeshProUGUI> moveTexts = new List<TextMeshProUGUI>();
@@ -38,16 +42,20 @@ public class BattleSystem : MonoBehaviour
     public Move selectedMove;
     public Color highlight;
     [SerializeField]private bool playerFirst;
+    [SerializeField]private bool playerDied;
     // Start is called before the first frame update
     void Start()
     {
         state = BattleState.Start;
+        currentMon = PlayerPrefs.GetInt("CurrentMon");
+        player.SetSize();
     }
     void Update(){
         //State machine to see what to do next
         switch(state){
             case BattleState.Start:
-                nameText.text = player.mon.monName;
+                UpdateName();
+                healthPercentageText.text = player.mon.currentHealth.ToString() + "/" + player.mon.maxHealth;
                 SetUpActions();
                 break;
             case BattleState.SelectAction:
@@ -56,9 +64,9 @@ public class BattleSystem : MonoBehaviour
                     if(actionNum == 0){
                         SetUpMoves(player.mon.moves);
                     }else if(actionNum == 1){
-                        state = BattleState.SwapMon;
+                        StartCoroutine(Catch());
+                    }else if(actionNum == 2){
                         SetUpSwap();
-                        get.SpawnMons();
                     }
                 }
                 break;
@@ -70,6 +78,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 if(Input.GetKeyDown(KeyCode.X)){
                     state = BattleState.SelectAction;
+                    
                     ClearMoveText();
                     SetUpActions();
                 }
@@ -80,7 +89,7 @@ public class BattleSystem : MonoBehaviour
                     SwapMon();
                     StopSwap();
                 }
-                if(Input.GetKeyDown(KeyCode.X)){
+                if(Input.GetKeyDown(KeyCode.X) && playerDied == false){
                     state = BattleState.SelectAction;
                     StopSwap();
                     SetUpActions();
@@ -94,10 +103,19 @@ public class BattleSystem : MonoBehaviour
                 break;
             case BattleState.EnemyDead:
                 state = BattleState.Start;
+                StartCoroutine(EnemyDie());
                 break;
             case BattleState.PlayerDead:
+                if(playerDied != true){
+                    StartCoroutine(PlayerDie());
+                }
                 break;
         }
+    }
+    //Updates the name text of enemy and player
+    void UpdateName(){
+        nameText.text = player.mon.monName;
+        enemyNameText.text = enemy.mon.monName;
     }
     //Enables text and changes the battlestate
     void SetUpActions(){
@@ -117,20 +135,38 @@ public class BattleSystem : MonoBehaviour
             if(actionNum < actionText.Count - 1)
                 actionNum ++;
         }
+        if(Input.GetKeyDown(KeyCode.RightArrow)){
+            if(actionNum == 0)
+                actionNum += 2;
+        }
+        if(Input.GetKeyDown(KeyCode.LeftArrow)){
+            if(actionNum == 2)
+                actionNum -= 2;
+        }
         foreach(TextMeshProUGUI g in actionText){
             g.color = Color.black;   
         }
         actionText[actionNum].color = highlight;
     }
-
+    //Disables stuff and changes battlestate for swapping
     void SetUpSwap(){
+        state = BattleState.SwapMon;
         battleUI.SetActive(false);
         monSelection.SetActive(true);
+        get.SpawnMons();
     }
 
+    //Gets rid of everything set up for swapping
     void StopSwap(){
         battleUI.SetActive(true);
         monSelection.SetActive(false);
+        Hexamon hex = player.GetComponent<Hexamon>();
+        hex.monData = player.mon;
+        for(int i = 0; i < get.mons.Count; i++){
+            if(get.mons[i] == hex.monData){
+                currentMon = i;
+            }
+        }
         int amount = get.nameTexts.Count;
         for(int t  = amount; t > 0; t--){
             Destroy(get.nameTexts[t-1].gameObject);
@@ -155,6 +191,7 @@ public class BattleSystem : MonoBehaviour
         hex.monData = get.mons[currentMon];
         StartCoroutine(hex.SetUpPicture());
         nameText.text = player.mon.monName;
+        healthPercentageText.text = player.mon.currentHealth.ToString() + "/" + player.mon.maxHealth;
         player.SetSize();
         player.attackMod = 1;
         player.speedMod = 1;
@@ -164,8 +201,14 @@ public class BattleSystem : MonoBehaviour
             g.enabled = false;
         }
         battleText.enabled = true;
-        playerFirst = true;
-        state = BattleState.Enemy;
+        if(playerDied == true){
+            playerDied = false; 
+            playerFirst = false;
+            state = BattleState.Start;
+        }else{
+            playerFirst = true;
+            state = BattleState.Enemy;
+        }
     }
     //Enables moves and disables action text
     void SetUpMoves(List<Move> mo){
@@ -173,7 +216,8 @@ public class BattleSystem : MonoBehaviour
         for(int i = 0; i < moveTexts.Count; i++){
             moveTexts[i].enabled = true;
             moveTexts[i].text = mo[i].MoveName;
-        }foreach(TextMeshProUGUI g in actionText){
+        }
+        foreach(TextMeshProUGUI g in actionText){
             g.enabled = false;
         }
     }
@@ -200,6 +244,41 @@ public class BattleSystem : MonoBehaviour
         info[0].text = selectedMove.Type;
         info[1].text = selectedMove.Accuracy + "%";
         info[2].text = "Pow: " + selectedMove.Damage;
+    }
+
+    //Turns the enemy pokemon to yours
+    IEnumerator Catch(){
+        foreach(TextMeshProUGUI g in actionText){
+            g.enabled = false;
+        }
+        battleText.enabled = true;
+        battleText.text = "You tried to catch " + enemy.mon.monName;
+        yield return new WaitForSeconds(1);
+        if(Random.Range(1,101) <= 40){
+            battleText.text = "You caught " + enemy.mon.monName;
+
+            yield return new WaitForSeconds(1);
+            en.mons[0].isMine = true;
+            get.mons.Add(en.mons[0]);
+            en.mons.Remove(en.mons[0]);
+            foreach(SaveMon savingMon in get.mons){
+                SaveManager.Save(savingMon);
+            }
+            PlayerPrefs.SetInt("CurrentMon",currentMon + 1);
+            if(en.mons.Count > 0){
+                en.MonChange();
+                enemy.SetSize();
+                UpdateName();
+                state = BattleState.Start;
+            }else{
+                SceneManager.LoadScene("WalkingArea");
+            }
+        }else{
+            battleText.text = "You failed to catch " + enemy.mon.monName;
+            yield return new WaitForSeconds(1);
+            playerFirst = true;
+            state = BattleState.Enemy;
+        }
     }
     //Checks to see who goes first based on speed
     void SpeedCheck(){
@@ -242,6 +321,7 @@ public class BattleSystem : MonoBehaviour
             }else{
                 StatChange(selectedMove,player,enemy);
                 enemy.TakeDamage(CalcDamage(selectedMove,player));
+                if(state == BattleState.EnemyDead)break;
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -256,11 +336,11 @@ public class BattleSystem : MonoBehaviour
     int CalcDamage(Move mo, BattleMon mon){
         int newDamage = mo.Damage;
         if(mo.isPhysical == true){
-            newDamage += mon.mon.attack;
-            newDamage *= (int)mon.attackMod;
+            newDamage += (mon.mon.attack * (int)mon.attackMod);
+            // newDamage *= (int)mon.attackMod;
         }else{
-            newDamage += mon.mon.intelligence;
-            newDamage *= (int)mon.intelligenceMod;
+            newDamage += mon.mon.intelligence * (int)mon.intelligenceMod;
+            // newDamage *= (int)mon.intelligenceMod;
         }
 
         if(mo.Type == mon.mon.type1 || mo.Type == mon.mon.type2){
@@ -321,6 +401,7 @@ public class BattleSystem : MonoBehaviour
             }else{
                 StatChange(curMove,enemy,player);
                 player.TakeDamage(CalcDamage(curMove,enemy));
+                if(state == BattleState.PlayerDead)break;
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -332,7 +413,38 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    void EnemyDie(){
-        
+    IEnumerator EnemyDie(){
+        yield return new WaitForSeconds(1f);
+        en.mons.Remove(en.mons[0]);
+        SaveManager.DestroyMon(enemy.mon.monName);
+        if(en.mons.Count > 0){
+            en.MonChange();
+            enemy.SetSize();
+            UpdateName();
+        }else{
+            foreach(SaveMon savingMon in get.mons){
+                SaveManager.Save(savingMon);
+            }
+            PlayerPrefs.SetInt("CurrentMon",currentMon);
+            SceneManager.LoadScene("WalkingArea");
+        }
+    }
+
+    IEnumerator PlayerDie(){
+        playerDied = true;
+        yield return new WaitForSeconds(1f);
+        get.mons.Remove(get.mons[currentMon]);
+        currentMon = 0;
+        SaveManager.DestroyMon(player.mon.monName);
+        if(get.mons.Count > 0){
+            player.mon = get.mons[0];
+            Hexamon hex = player.GetComponent<Hexamon>();
+            hex.monData = get.mons[0];
+            StartCoroutine(hex.SetUpPicture());
+            SetUpSwap();
+        }else{
+            PlayerPrefs.SetInt("CurrentMon",0);
+           SceneManager.LoadScene("WalkingArea"); 
+        }
     }
 }

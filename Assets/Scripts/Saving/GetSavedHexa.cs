@@ -18,9 +18,10 @@ public class GetSavedHexa : MonoBehaviour
     public List<TextMeshProUGUI> nameTexts = new List<TextMeshProUGUI>();
     void Start()
     {
-        mons = GetMons();
-        hex.monData = mons[0];
-        battleMon.mon = mons[0];
+        mons = GetMons(true);
+        int currentMon = PlayerPrefs.GetInt("CurrentMon");
+        hex.monData = mons[currentMon];
+        battleMon.mon = mons[currentMon];
     }
 
     void Update(){
@@ -35,14 +36,16 @@ public class GetSavedHexa : MonoBehaviour
             UpdateInfo();
         }
     }
-    List<SaveMon> GetMons(){
+    public List<SaveMon> GetMons(bool yours){
         string dir = Application.persistentDataPath + directory;
         string[] monFiles = Directory.GetFiles(dir);
         Debug.Log(monFiles[0]);
         List<SaveMon> mo = new List<SaveMon>();
         for(int i = 0; i < monFiles.Length; i++){
             SaveMon loadMon = SaveManager.Load(monFiles[i]);
-            mo.Add(loadMon);
+            if(loadMon.isMine == yours){
+                mo.Add(loadMon);
+            } 
         }
         return mo;
     }
@@ -64,7 +67,7 @@ public class GetSavedHexa : MonoBehaviour
         info[1].text = "Defense:" + hex.monData.defense.ToString();
         info[2].text = "Speed:" + hex.monData.speed.ToString();
         info[3].text = "Intelligence:" + hex.monData.intelligence.ToString();
-        info[4].text = "Health:" + hex.monData.maxHealth.ToString() + "/" + hex.monData.currentHealth.ToString();
+        info[4].text = "Health:" + hex.monData.currentHealth.ToString() + "/" + hex.monData.maxHealth.ToString();
         if(hex.monData.type2 != ""){
             info[5].text = hex.monData.type1 + "/" + hex.monData.type2;
         }else{

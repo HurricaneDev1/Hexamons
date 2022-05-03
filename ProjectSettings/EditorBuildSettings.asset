@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MonScene.unity
+    path: Assets/Scenes/WildMonScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/WalkingArea.unity
     guid: 43bc924d032cbc348a0397ba0ffd3c5c
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 5f0c542bd56323c488eedfc16fb7c8a1
   m_configObjects: {}

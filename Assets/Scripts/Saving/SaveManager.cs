@@ -28,4 +28,13 @@ public static class SaveManager
         }
         return mon;
     }
+
+    public static void DestroyMon(string monName){
+        fileName = monName + ".txt";
+        string picFileName = monName + ".png";
+        string dir = Application.persistentDataPath + directory;
+        string picDir = Application.persistentDataPath + "/HexamonPictures/";
+        File.Delete(dir + fileName);
+        File.Delete(picDir + picFileName);
+    }
 }

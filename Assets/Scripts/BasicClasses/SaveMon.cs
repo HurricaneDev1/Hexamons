@@ -14,4 +14,5 @@ public class SaveMon
     public string type1;
     public string type2;
     public List<Move> moves = new List<Move>();
+    public bool isMine;
 }

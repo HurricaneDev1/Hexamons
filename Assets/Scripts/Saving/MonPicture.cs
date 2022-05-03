@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
  //System.IO;: You need this to find the files in your Directory
  using System.IO;
  
@@ -7,24 +8,18 @@ using UnityEngine;
      public bool UseSimple = false;
      private StatsGenerator stats;
      public string filename;
-    //  void OnEnable() {
-    //     var cam = Camera.main;
-    //     // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
-    //     cam.cullingMask = LayerMask.GetMask("Default");
- 
-    //     string filename = string.Format("Screenshots/capture_{0}.png", 0);
-    //     int width = Screen.width;
-    //     int height = Screen.height;
-    //     if (UseSimple) {
-    //         CaptureScreenshot.SimpleCaptureTransparentScreenshot(cam, width, height, filename);
-    //     }
-    //     else {
-    //         CaptureScreenshot.CaptureTransparentScreenshot(cam, width, height, filename);
-    //     }
-    //  }
-
+    
+    void Start(){
+        StartCoroutine(PictureTake());
+    }
      void Update(){
-         if(Input.GetKeyDown(KeyCode.K)){
+        if(Input.GetKeyDown(KeyCode.K)){
+            PictureTake();
+        }
+     }
+
+    IEnumerator PictureTake(){
+        yield return new WaitForSeconds(0.3f);
             var cam = Camera.main;
             // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
             cam.cullingMask = LayerMask.GetMask("Default");
@@ -43,8 +38,7 @@ using UnityEngine;
             }
 
          }
-     }
- }
+    }
  
  public static class CaptureScreenshot {
      public static void CaptureTransparentScreenshot(Camera cam, int width, int height, string screengrabfile_path) {
