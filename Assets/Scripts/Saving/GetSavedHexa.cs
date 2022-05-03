@@ -25,6 +25,7 @@ public class GetSavedHexa : MonoBehaviour
     }
 
     void Update(){
+        //Does stuff if the swap action is being preformed
         if(bat.state == BattleState.SwapMon){
             for(int t = 0; t < nameTexts.Count; t++){
                 if(t != bat.currentMon){
@@ -36,6 +37,7 @@ public class GetSavedHexa : MonoBehaviour
             UpdateInfo();
         }
     }
+    //Takes all mons from the mon info area and gets their data
     public List<SaveMon> GetMons(bool yours){
         string dir = Application.persistentDataPath + directory;
         string[] monFiles = Directory.GetFiles(dir);
@@ -50,6 +52,7 @@ public class GetSavedHexa : MonoBehaviour
         return mo;
     }
 
+    //Sets up the text for each hexamon when switching
     public void SpawnMons(){
         for(int i = 0; i < mons.Count; i++){
             TextMeshProUGUI text = Instantiate(monName,new Vector3(textSpawn.position.x,textSpawn.position.y - i),Quaternion.identity);
@@ -60,6 +63,7 @@ public class GetSavedHexa : MonoBehaviour
         }
     }
 
+    //Makes the info text fit for the current hexamon
     void UpdateInfo(){
         hex.monData = mons[bat.currentMon];
         StartCoroutine(hex.SetUpPicture());

@@ -30,6 +30,7 @@ public class BattleSystem : MonoBehaviour
     [Header("Text")]
     [SerializeField]private TextMeshProUGUI nameText;
     [SerializeField]private TextMeshProUGUI enemyNameText;
+    [SerializeField]private TextMeshProUGUI enemyType;
     [SerializeField]private TextMeshProUGUI battleText;
     public TextMeshProUGUI healthPercentageText;
     [SerializeField]private List<TextMeshProUGUI> info = new List<TextMeshProUGUI>();
@@ -116,6 +117,9 @@ public class BattleSystem : MonoBehaviour
     void UpdateName(){
         nameText.text = player.mon.monName;
         enemyNameText.text = enemy.mon.monName;
+        enemyType.text = enemy.mon.type1;
+        if(enemy.mon.type2 != "")
+            enemyType.text += "/" + enemy.mon.type2;
     }
     //Enables text and changes the battlestate
     void SetUpActions(){
@@ -320,7 +324,7 @@ public class BattleSystem : MonoBehaviour
                 battleText.text = player.mon.monName + " attack missed";
             }else{
                 StatChange(selectedMove,player,enemy);
-                enemy.TakeDamage(CalcDamage(selectedMove,player));
+                enemy.TakeDamage(CalcDamage(selectedMove,player), selectedMove);
                 if(state == BattleState.EnemyDead)break;
             }
             yield return new WaitForSeconds(0.2f);
@@ -400,7 +404,7 @@ public class BattleSystem : MonoBehaviour
                 battleText.text = enemy.mon.monName + " attack missed";
             }else{
                 StatChange(curMove,enemy,player);
-                player.TakeDamage(CalcDamage(curMove,enemy));
+                player.TakeDamage(CalcDamage(curMove,enemy), curMove);
                 if(state == BattleState.PlayerDead)break;
             }
             yield return new WaitForSeconds(0.2f);
@@ -432,18 +436,22 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerDie(){
         playerDied = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         get.mons.Remove(get.mons[currentMon]);
         currentMon = 0;
         SaveManager.DestroyMon(player.mon.monName);
         if(get.mons.Count > 0){
+            battleText.text = player.mon.monName + " died. Get good";
+            yield return new WaitForSeconds(1f);
             player.mon = get.mons[0];
             Hexamon hex = player.GetComponent<Hexamon>();
             hex.monData = get.mons[0];
             StartCoroutine(hex.SetUpPicture());
             SetUpSwap();
         }else{
-            PlayerPrefs.SetInt("CurrentMon",0);
+           PlayerPrefs.SetInt("CurrentMon",0);
+           battleText.text = "You are absolute garbage";
+           yield return new WaitForSeconds(1);
            SceneManager.LoadScene("WalkingArea"); 
         }
     }

@@ -15,28 +15,33 @@ public class MoveGeneration : MonoBehaviour
         for(int i = 0; i < 4 ; i++){
             Move mo = new Move();
             //MoveName
-            int damage = Random.Range(10,line.lRend.positionCount * 10);
-            mo.Accuracy = Random.Range(10,101);
-            mo.NumHits = Random.Range(1,10);
+            int damage = Random.Range(50,line.lRend.positionCount * 5);
+            mo.Accuracy = Random.Range(40,101);
+            mo.NumHits = Random.Range(1,6);
             damage -= mo.NumHits * 10;
             if(damage < 0)damage = 0;
             damage += 10;
             mo.Damage = damage;
+            mo.Accuracy -= (int)damage/10;
+            //Typing
             if(i < stat.finalType.Count){
                 mo.Type = stat.finalType[i];
             }else{
                 List<string> typs = stat.ChooseType();
                 mo.Type = typs[0];
             }
+            //Chooses between physical or intelligence based
             int choice = Random.Range(0,2);
             if(choice == 0){
-                mo.isPhysical = true;
+                mo.isPhysical = true; 
             }else{
                 mo.isPhysical = false;
             }
+            //Effect Creation
             int ch = Random.Range(0,changes.Length);
             mo.typeOfChange = changes[ch];
-            mo.numChange = Random.Range(0.5f,2f);
+            float numChange = Mathf.Round(Random.Range(0.7f,1.5f) * 10);
+            mo.numChange = numChange/10;
             mo.effectChance = Random.Range(1,101);
             int me = Random.Range(0,2);
             if(me == 0){

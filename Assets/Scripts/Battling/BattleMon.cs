@@ -15,13 +15,14 @@ public class BattleMon: Typings
     public float speedMod = 1;
 
     //Calculates typing and defense then deals damage accodingly
-    public void TakeDamage(int damage){
-        int finalDamage = TypeCheck(mon,damage,bat.selectedMove);
-        if(bat.selectedMove.isPhysical == true){
+    public void TakeDamage(int damage, Move curMove){
+        int finalDamage = damage;
+        if(curMove.isPhysical == true){
             finalDamage = finalDamage - (int)(mon.defense * defenseMod);
         }else{
             finalDamage = finalDamage - (int)(mon.intelligence * intelligenceMod);
         }
+        finalDamage = TypeCheck(mon,finalDamage,curMove);
         if(finalDamage < 0)finalDamage = 1;
         mon.currentHealth -= finalDamage;
         CheckDeath();
