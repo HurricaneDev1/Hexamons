@@ -13,16 +13,17 @@ public class BattleMon: Typings
     public float defenseMod = 1;
     public float intelligenceMod = 1;
     public float speedMod = 1;
+    private int finalDamage;
 
     //Calculates typing and defense then deals damage accodingly
     public void TakeDamage(int damage, Move curMove){
-        int finalDamage = damage;
+        finalDamage = damage;
         if(curMove.isPhysical == true){
             finalDamage = finalDamage - (int)(mon.defense * defenseMod);
         }else{
             finalDamage = finalDamage - (int)(mon.intelligence * intelligenceMod);
         }
-        finalDamage = TypeCheck(mon,finalDamage,curMove);
+        StartCoroutine(TypeSetUp(curMove));
         if(finalDamage < 0)finalDamage = 1;
         mon.currentHealth -= finalDamage;
         CheckDeath();
@@ -50,5 +51,18 @@ public class BattleMon: Typings
             }
             mon.currentHealth = 0;
         }
+    }
+
+    IEnumerator TypeSetUp(Move curMove){
+        int ogDamage = finalDamage;
+        finalDamage = TypeCheck(mon,finalDamage,curMove);
+        if(finalDamage == ogDamage/2 || finalDamage == ogDamage/4){
+            bat.battleText.text = "The attack wasn't Very Effective";
+        }else if(finalDamage == ogDamage * 2 || finalDamage == ogDamage * 4){
+            bat.battleText.text = "The attack was Super Effective";
+        }else if(finalDamage == 0){
+            bat.battleText.text = "The attack did nothing";
+        }
+        yield return new WaitForSeconds(1f);
     }
 }

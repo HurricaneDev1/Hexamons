@@ -27,7 +27,6 @@ using System.Collections;
             stats = this.GetComponent<StatsGenerator>();
     
             filename = string.Format(Application.persistentDataPath + "/HexamonPictures/ " + stats.monName +".png", 0);
-            Debug.Log("Mon Saved");
             int width = Screen.width;
             int height = Screen.height;
             if (UseSimple) {

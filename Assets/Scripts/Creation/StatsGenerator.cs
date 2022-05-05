@@ -75,6 +75,12 @@ public class StatsGenerator : MonoBehaviour
             int ranNum = Random.Range(0,26);
             monName += letters[ranNum];
         }
+        GetSavedHexa get = GetComponent<GetSavedHexa>();
+        foreach(SaveMon save in get.GetMons(true)){
+            if(monName == save.monName){
+                MakeName();
+            }
+        }
         Debug.Log(monName);
     }
 }

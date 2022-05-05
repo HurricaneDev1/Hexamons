@@ -47,6 +47,7 @@ public class Hexamon : MonoBehaviour
         if(bat.state == BattleState.SelectAction || bat.state == BattleState.SelectMove){
             Bob(transform);
             Bob(healthBar);
+            Bob(bat.battleText.transform);
         }
     }
 

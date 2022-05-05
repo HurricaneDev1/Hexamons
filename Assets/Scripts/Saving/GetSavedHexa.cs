@@ -41,7 +41,6 @@ public class GetSavedHexa : MonoBehaviour
     public List<SaveMon> GetMons(bool yours){
         string dir = Application.persistentDataPath + directory;
         string[] monFiles = Directory.GetFiles(dir);
-        Debug.Log(monFiles[0]);
         List<SaveMon> mo = new List<SaveMon>();
         for(int i = 0; i < monFiles.Length; i++){
             SaveMon loadMon = SaveManager.Load(monFiles[i]);

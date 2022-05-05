@@ -31,7 +31,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField]private TextMeshProUGUI nameText;
     [SerializeField]private TextMeshProUGUI enemyNameText;
     [SerializeField]private TextMeshProUGUI enemyType;
-    [SerializeField]private TextMeshProUGUI battleText;
+    public TextMeshProUGUI battleText;
     public TextMeshProUGUI healthPercentageText;
     [SerializeField]private List<TextMeshProUGUI> info = new List<TextMeshProUGUI>();
     [SerializeField]private List<TextMeshProUGUI> actionText = new List<TextMeshProUGUI>();
@@ -79,7 +79,6 @@ public class BattleSystem : MonoBehaviour
                 }
                 if(Input.GetKeyDown(KeyCode.X)){
                     state = BattleState.SelectAction;
-                    
                     ClearMoveText();
                     SetUpActions();
                 }
@@ -103,7 +102,6 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(EnemyAttack());
                 break;
             case BattleState.EnemyDead:
-                state = BattleState.Start;
                 StartCoroutine(EnemyDie());
                 break;
             case BattleState.PlayerDead:
@@ -123,7 +121,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Enables text and changes the battlestate
     void SetUpActions(){
-        battleText.enabled = false;
+        battleText.text = "What will " + player.mon.monName + " do?";
         foreach(TextMeshProUGUI g in actionText){
             g.enabled = true;
         }
@@ -216,6 +214,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Enables moves and disables action text
     void SetUpMoves(List<Move> mo){
+        battleText.enabled = false;
         state = BattleState.SelectMove;
         for(int i = 0; i < moveTexts.Count; i++){
             moveTexts[i].enabled = true;
@@ -255,7 +254,6 @@ public class BattleSystem : MonoBehaviour
         foreach(TextMeshProUGUI g in actionText){
             g.enabled = false;
         }
-        battleText.enabled = true;
         battleText.text = "You tried to catch " + enemy.mon.monName;
         yield return new WaitForSeconds(1);
         if(Random.Range(1,101) <= 40){
@@ -306,6 +304,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Gets rid of move text and info text
     void ClearMoveText(){
+        battleText.enabled = true;
         foreach(TextMeshProUGUI g in moveTexts){
             g.enabled = false;
         }
@@ -319,15 +318,16 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = player.mon.monName + " used " + selectedMove.MoveName;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             if(selectedMove.Accuracy < hitChance){
-                battleText.text = player.mon.monName + " attack missed";
+                battleText.text = player.mon.monName + "'s attack missed";
             }else{
                 StatChange(selectedMove,player,enemy);
+                yield return new WaitForSeconds(1f);
                 enemy.TakeDamage(CalcDamage(selectedMove,player), selectedMove);
                 if(state == BattleState.EnemyDead)break;
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.6f);
         }
         if(playerFirst == true && state == BattleState.Wait){
             state = BattleState.Enemy;
@@ -355,35 +355,60 @@ public class BattleSystem : MonoBehaviour
 
     //Changes a hexamons stat modifiers based on a move
     void StatChange(Move mo, BattleMon good, BattleMon bad){
+        //This is to see what to do for the battle texts
+        string user = "";
+        string opposition = "";
+        string increase = "";
+        if(good == player){
+            user = player.mon.monName;
+            opposition = enemy.mon.monName;
+        }else{
+            user = enemy.mon.monName;
+            opposition = player.mon.monName;
+        }
+        if(mo.numChange < 0){
+            increase = " lowered";
+        }else{
+            increase = " raised";
+        }
+        //Actually changes the stat modifiers
         int changeChance = Random.Range(0,101);
         if(mo.effectChance > changeChance){
             switch(mo.typeOfChange){
             case "Attack":
                 if(mo.effectMe == true){
                     good.attackMod *= mo.numChange;
+                    battleText.text = user + increase + " it's Attack";
                 }else{
                     bad.attackMod *= mo.numChange;
+                    battleText.text = user + increase + "'s Attack got " + increase;
                 }
                 break;
             case "Defense":
                 if(mo.effectMe == true){
                     good.defenseMod *= mo.numChange;
+                    battleText.text = user + increase + " it's Defense";
                 }else{
                     bad.defenseMod *= mo.numChange;
+                    battleText.text = user + increase + "'s Defense got " + increase;
                 }
                 break;
             case "Intelligence":
                 if(mo.effectMe == true){
                     good.intelligenceMod *= mo.numChange;
+                    battleText.text = user + increase + " it's Intelligence";
                 }else{
                     bad.intelligenceMod *= mo.numChange;
+                    battleText.text = user + increase + "'s Intelligence got " + increase;
                 }
                 break;
             case "Speed":
                 if(mo.effectMe == true){
                     good.speedMod *= mo.numChange;
+                    battleText.text = user + increase + " it's Speed";
                 }else{
                     bad.speedMod *= mo.numChange;
+                    battleText.text = user + increase + "'s Speed got " + increase;
                 }
                 break;
             }
@@ -399,15 +424,16 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = enemy.mon.monName + " used " + curMove.MoveName;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             if(curMove.Accuracy < hitChance){
-                battleText.text = enemy.mon.monName + " attack missed";
+                battleText.text = enemy.mon.monName + "'s attack missed";
             }else{
                 StatChange(curMove,enemy,player);
+                yield return new WaitForSeconds(0.3f);
                 player.TakeDamage(CalcDamage(curMove,enemy), curMove);
                 if(state == BattleState.PlayerDead)break;
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
         if(playerFirst == false && state == BattleState.Wait){
             state = BattleState.Player;
@@ -418,6 +444,7 @@ public class BattleSystem : MonoBehaviour
     }
 
     IEnumerator EnemyDie(){
+        battleText.text = "You defeated " + enemy.mon.monName;
         yield return new WaitForSeconds(1f);
         en.mons.Remove(en.mons[0]);
         SaveManager.DestroyMon(enemy.mon.monName);
@@ -425,6 +452,7 @@ public class BattleSystem : MonoBehaviour
             en.MonChange();
             enemy.SetSize();
             UpdateName();
+            state = BattleState.Start;
         }else{
             foreach(SaveMon savingMon in get.mons){
                 SaveManager.Save(savingMon);
@@ -442,7 +470,7 @@ public class BattleSystem : MonoBehaviour
         SaveManager.DestroyMon(player.mon.monName);
         if(get.mons.Count > 0){
             battleText.text = player.mon.monName + " died. Get good";
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             player.mon = get.mons[0];
             Hexamon hex = player.GetComponent<Hexamon>();
             hex.monData = get.mons[0];
@@ -451,7 +479,7 @@ public class BattleSystem : MonoBehaviour
         }else{
            PlayerPrefs.SetInt("CurrentMon",0);
            battleText.text = "You are absolute garbage";
-           yield return new WaitForSeconds(1);
+           yield return new WaitForSeconds(3);
            SceneManager.LoadScene("WalkingArea"); 
         }
     }
