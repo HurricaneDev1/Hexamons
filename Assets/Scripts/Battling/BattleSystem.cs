@@ -318,7 +318,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = player.mon.monName + " used " + selectedMove.MoveName;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             if(selectedMove.Accuracy < hitChance){
                 battleText.text = player.mon.monName + "'s attack missed";
             }else{
@@ -381,7 +381,7 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Attack";
                 }else{
                     bad.attackMod *= mo.numChange;
-                    battleText.text = user + increase + "'s Attack got " + increase;
+                    battleText.text = user + "'s Attack got " + increase;
                 }
                 break;
             case "Defense":
@@ -390,7 +390,7 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Defense";
                 }else{
                     bad.defenseMod *= mo.numChange;
-                    battleText.text = user + increase + "'s Defense got " + increase;
+                    battleText.text = user + "'s Defense got " + increase;
                 }
                 break;
             case "Intelligence":
@@ -399,7 +399,7 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Intelligence";
                 }else{
                     bad.intelligenceMod *= mo.numChange;
-                    battleText.text = user + increase + "'s Intelligence got " + increase;
+                    battleText.text = user + "'s Intelligence got " + increase;
                 }
                 break;
             case "Speed":
@@ -408,7 +408,7 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Speed";
                 }else{
                     bad.speedMod *= mo.numChange;
-                    battleText.text = user + increase + "'s Speed got " + increase;
+                    battleText.text = user + "'s Speed got " + increase;
                 }
                 break;
             }
@@ -424,7 +424,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = enemy.mon.monName + " used " + curMove.MoveName;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             if(curMove.Accuracy < hitChance){
                 battleText.text = enemy.mon.monName + "'s attack missed";
             }else{

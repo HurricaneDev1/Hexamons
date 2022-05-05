@@ -20,13 +20,16 @@ public class GetSavedHexa : MonoBehaviour
     {
         mons = GetMons(true);
         int currentMon = PlayerPrefs.GetInt("CurrentMon");
-        hex.monData = mons[currentMon];
-        battleMon.mon = mons[currentMon];
+        if(hex != null){
+            hex.monData = mons[currentMon];
+            battleMon.mon = mons[currentMon];
+        }
     }
 
     void Update(){
         //Does stuff if the swap action is being preformed
-        if(bat.state == BattleState.SwapMon){
+        if(bat != null){
+            if(bat.state == BattleState.SwapMon){
             for(int t = 0; t < nameTexts.Count; t++){
                 if(t != bat.currentMon){
                     nameTexts[t].color = Color.black;
@@ -35,6 +38,7 @@ public class GetSavedHexa : MonoBehaviour
                 }
             }
             UpdateInfo();
+        }
         }
     }
     //Takes all mons from the mon info area and gets their data

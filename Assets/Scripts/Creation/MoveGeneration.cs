@@ -8,6 +8,8 @@ public class MoveGeneration : MonoBehaviour
     private string[] changes = {"Attack","Defense","Intelligence","Speed",""};
     private LineCreation line;
     private StatsGenerator stat;
+    private string[] prefixs = {"Hyper","Mega","Strong","Quick","Evil","Weak","Holy","Draco","Crazy","Sad","Happy","Angry","Meh","Shattered","Old","Brave","Bloody","Rough","Huge","Sharp"};
+    private string[] capNouns = {"Money","Freedom","Business","Gun","Market"};
     public List<Move> MakeMoves(){
         moves.Clear();
         line = GetComponent<LineCreation>();
@@ -15,6 +17,8 @@ public class MoveGeneration : MonoBehaviour
         for(int i = 0; i < 4 ; i++){
             Move mo = new Move();
             //MoveName
+            mo.MoveName = MakeMoveName();
+            //Stats
             int damage = Random.Range(50,line.lRend.positionCount * 5);
             mo.Accuracy = Random.Range(40,101);
             mo.NumHits = Random.Range(1,6);
@@ -40,7 +44,7 @@ public class MoveGeneration : MonoBehaviour
             //Effect Creation
             int ch = Random.Range(0,changes.Length);
             mo.typeOfChange = changes[ch];
-            float numChange = Mathf.Round(Random.Range(0.7f,1.5f) * 10);
+            float numChange = Mathf.Round(Random.Range(0.6f,1.7f) * 10);
             mo.numChange = numChange/10;
             mo.effectChance = Random.Range(1,101);
             int me = Random.Range(0,2);
@@ -52,5 +56,14 @@ public class MoveGeneration : MonoBehaviour
             moves.Add(mo);
         }
         return moves;
+    }
+
+    string MakeMoveName(){
+        string moveName = "";
+        int randWord = Random.Range(0,prefixs.Length);
+        moveName += prefixs[randWord];
+        int randNoun = Random.Range(0,capNouns.Length);
+        moveName += capNouns[randNoun];
+        return moveName;
     }
 }
