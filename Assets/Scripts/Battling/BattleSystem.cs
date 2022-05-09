@@ -44,6 +44,7 @@ public class BattleSystem : MonoBehaviour
     public Color highlight;
     [SerializeField]private bool playerFirst;
     [SerializeField]private bool playerDied;
+    [SerializeField]private bool playAnimation;
     // Start is called before the first frame update
     void Start()
     {
@@ -318,17 +319,20 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = player.mon.monName + " used " + selectedMove.MoveName;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
             if(selectedMove.Accuracy < hitChance){
                 battleText.text = player.mon.monName + "'s attack missed";
             }else{
                 StatChange(selectedMove,player,enemy);
-                yield return new WaitForSeconds(1f);
+                if(playAnimation == true){
+                    yield return new WaitForSeconds(1f);
+                }
                 player.hex.PlayAttack();
+                yield return new WaitForSeconds(0.3f);
                 enemy.TakeDamage(CalcDamage(selectedMove,player), selectedMove);
                 if(state == BattleState.EnemyDead)break;
             }
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.5f);
         }
         if(playerFirst == true && state == BattleState.Wait){
             state = BattleState.Enemy;
@@ -372,7 +376,7 @@ public class BattleSystem : MonoBehaviour
         }else{
             increase = " raised";
         }
-        bool PlayAnimation = false;
+        playAnimation = false;
         //Actually changes the stat modifiers
         int changeChance = Random.Range(0,101);
         if(mo.effectChance > changeChance){
@@ -385,7 +389,7 @@ public class BattleSystem : MonoBehaviour
                     bad.attackMod *= mo.numChange;
                     battleText.text = opposition + "'s Attack got" + increase;
                 }
-                PlayAnimation = true;
+                playAnimation = true;
                 break;
             case "Defense":
                 if(mo.effectMe == true){
@@ -395,7 +399,7 @@ public class BattleSystem : MonoBehaviour
                     bad.defenseMod *= mo.numChange;
                     battleText.text = opposition + "'s Defense got" + increase;
                 }
-                PlayAnimation = true;
+                playAnimation = true;
                 break;
             case "Intelligence":
                 if(mo.effectMe == true){
@@ -405,7 +409,7 @@ public class BattleSystem : MonoBehaviour
                     bad.intelligenceMod *= mo.numChange;
                     battleText.text = opposition + "'s Intelligence got" + increase;
                 }
-                PlayAnimation = true;
+                playAnimation = true;
                 break;
             case "Speed":
                 if(mo.effectMe == true){
@@ -415,11 +419,11 @@ public class BattleSystem : MonoBehaviour
                     bad.speedMod *= mo.numChange;
                     battleText.text = opposition + "'s Speed got" + increase;
                 }
-                PlayAnimation = true;
+                playAnimation = true;
                 break;
             }
             //Checks to see which particle system to play
-            if(PlayAnimation == true){
+            if(playAnimation == true){
                 if(increase == " raised"){
                 if(good == player && mo.effectMe == true){
                     player.hex.PlayBuff();
@@ -454,12 +458,15 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Wait;
             int hitChance = Random.Range(0,101);
             battleText.text = enemy.mon.monName + " used " + curMove.MoveName;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
             if(curMove.Accuracy < hitChance){
                 battleText.text = enemy.mon.monName + "'s attack missed";
             }else{
                 StatChange(curMove,enemy,player);
-                yield return new WaitForSeconds(0.3f);
+                if(playAnimation == true){
+                    yield return new WaitForSeconds(1f);
+                }
+                yield return new WaitForSeconds(0.4f);
                 player.TakeDamage(CalcDamage(curMove,enemy), curMove);
                 enemy.hex.PlayAttack();
                 if(state == BattleState.PlayerDead)break;

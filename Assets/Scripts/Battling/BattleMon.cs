@@ -64,6 +64,6 @@ public class BattleMon: Typings
         }else if(finalDamage == 0){
             bat.battleText.text = "The attack did nothing";
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.8f);
     }
 }
