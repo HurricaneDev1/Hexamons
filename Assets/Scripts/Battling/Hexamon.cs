@@ -10,6 +10,9 @@ public class Hexamon : MonoBehaviour
     [SerializeField]private Transform healthBar;
     [SerializeField]private SpriteRenderer picture;
     [SerializeField]private float pictureSize;
+    [SerializeField]private ParticleSystem buff;
+    [SerializeField]private ParticleSystem debuff;
+    [SerializeField]private ParticleSystem attack;
 
     [SerializeField]private float speed = 5f;
  
@@ -47,7 +50,6 @@ public class Hexamon : MonoBehaviour
         if(bat.state == BattleState.SelectAction || bat.state == BattleState.SelectMove){
             Bob(transform);
             Bob(healthBar);
-            Bob(bat.battleText.transform);
         }
     }
 
@@ -58,5 +60,21 @@ public class Hexamon : MonoBehaviour
         float newY = Mathf.Sin(Time.time * speed);
 
         trans.position = new Vector3(pos.x, pos.y + newY * height);
+    }
+
+    public void PlayBuff(){
+        buff.Play();
+    }
+
+    public void PlayDebuff(){
+        debuff.Play();
+    }
+
+    public void PlayAttack(){
+        SaveMon thisMon = GetComponent<BattleMon>().mon;
+        var col = attack.colorOverLifetime;
+        col.enabled = true;
+        col.color = thisMon.attackGradient;
+        attack.Play();
     }
 }

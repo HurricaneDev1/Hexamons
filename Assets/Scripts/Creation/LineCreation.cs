@@ -59,7 +59,7 @@ public class LineCreation : MonoBehaviour
     }
 
     //Makes a gradient
-    Gradient MakeGradient(){
+    public Gradient MakeGradient(){
         Gradient gradient = new Gradient();
         float alpha = 1.0f;
         Color32 cow = MakeColor();

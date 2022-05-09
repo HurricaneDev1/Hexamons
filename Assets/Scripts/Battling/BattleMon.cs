@@ -8,6 +8,7 @@ public class BattleMon: Typings
     public BattleSystem bat;
     [SerializeField]private Transform healthBar;
     [SerializeField]private bool isEnemy;
+    public Hexamon hex;
 
     public float attackMod = 1;
     public float defenseMod = 1;

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine;
 [System.Serializable]
 
 public class SaveMon 
 {
     public string monName;
     public string picturePath;
+    public Gradient attackGradient;
     public int attack;
     public int defense;
     public int maxHealth;

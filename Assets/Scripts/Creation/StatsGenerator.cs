@@ -12,6 +12,7 @@ public class StatsGenerator : MonoBehaviour
     public int Intelligence;
     public int Speed;
     public int Health;
+    public Gradient GradientAttack;
     public string monName;
     public List<Move> moves = new List<Move>();
     private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
@@ -63,7 +64,8 @@ public class StatsGenerator : MonoBehaviour
         Defense = Random.Range(posCount,(int)(posCount * 1.5));
         Intelligence = Random.Range(posCount,(int)(posCount * 1.5));
         Speed = Random.Range(posCount, (int)(posCount * 1.5));
-        Health = Random.Range(posCount * 5, posCount * 10);
+        Health = Random.Range(posCount * 15, posCount * 20);
+        GradientAttack = line.MakeGradient();
         MakeName();
     }
 

@@ -284,7 +284,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Checks to see who goes first based on speed
     void SpeedCheck(){
-        if(player.mon.speed * player.speedMod > enemy.mon.speed * player.speedMod){
+        if(player.mon.speed * player.speedMod > enemy.mon.speed * enemy.speedMod){
             state = BattleState.Player;
             playerFirst = true;
         }else if(player.mon.speed * player.speedMod == enemy.mon.speed * enemy.speedMod){
@@ -324,6 +324,7 @@ public class BattleSystem : MonoBehaviour
             }else{
                 StatChange(selectedMove,player,enemy);
                 yield return new WaitForSeconds(1f);
+                player.hex.PlayAttack();
                 enemy.TakeDamage(CalcDamage(selectedMove,player), selectedMove);
                 if(state == BattleState.EnemyDead)break;
             }
@@ -366,11 +367,12 @@ public class BattleSystem : MonoBehaviour
             user = enemy.mon.monName;
             opposition = player.mon.monName;
         }
-        if(mo.numChange < 0){
+        if(mo.numChange < 1){
             increase = " lowered";
         }else{
             increase = " raised";
         }
+        bool PlayAnimation = false;
         //Actually changes the stat modifiers
         int changeChance = Random.Range(0,101);
         if(mo.effectChance > changeChance){
@@ -381,8 +383,9 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Attack";
                 }else{
                     bad.attackMod *= mo.numChange;
-                    battleText.text = user + "'s Attack got " + increase;
+                    battleText.text = opposition + "'s Attack got" + increase;
                 }
+                PlayAnimation = true;
                 break;
             case "Defense":
                 if(mo.effectMe == true){
@@ -390,8 +393,9 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Defense";
                 }else{
                     bad.defenseMod *= mo.numChange;
-                    battleText.text = user + "'s Defense got " + increase;
+                    battleText.text = opposition + "'s Defense got" + increase;
                 }
+                PlayAnimation = true;
                 break;
             case "Intelligence":
                 if(mo.effectMe == true){
@@ -399,8 +403,9 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Intelligence";
                 }else{
                     bad.intelligenceMod *= mo.numChange;
-                    battleText.text = user + "'s Intelligence got " + increase;
+                    battleText.text = opposition + "'s Intelligence got" + increase;
                 }
+                PlayAnimation = true;
                 break;
             case "Speed":
                 if(mo.effectMe == true){
@@ -408,9 +413,34 @@ public class BattleSystem : MonoBehaviour
                     battleText.text = user + increase + " it's Speed";
                 }else{
                     bad.speedMod *= mo.numChange;
-                    battleText.text = user + "'s Speed got " + increase;
+                    battleText.text = opposition + "'s Speed got" + increase;
                 }
+                PlayAnimation = true;
                 break;
+            }
+            //Checks to see which particle system to play
+            if(PlayAnimation == true){
+                if(increase == " raised"){
+                if(good == player && mo.effectMe == true){
+                    player.hex.PlayBuff();
+                }else if(good == player && mo.effectMe == false){
+                    enemy.hex.PlayBuff();
+                }else if(good != player && mo.effectMe == true){
+                    enemy.hex.PlayBuff();
+                }else{
+                    player.hex.PlayBuff();
+                }
+                }else if(increase == " lowered"){
+                    if(good == player && mo.effectMe == true){
+                        player.hex.PlayDebuff();
+                    }else if(good == player && mo.effectMe == false){
+                        enemy.hex.PlayDebuff();
+                    }else if(good != player && mo.effectMe == true){
+                        enemy.hex.PlayDebuff();
+                    }else{
+                        player.hex.PlayDebuff();
+                    }
+                }
             }
         }
     }
@@ -431,6 +461,7 @@ public class BattleSystem : MonoBehaviour
                 StatChange(curMove,enemy,player);
                 yield return new WaitForSeconds(0.3f);
                 player.TakeDamage(CalcDamage(curMove,enemy), curMove);
+                enemy.hex.PlayAttack();
                 if(state == BattleState.PlayerDead)break;
             }
             yield return new WaitForSeconds(0.5f);
@@ -445,6 +476,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyDie(){
         battleText.text = "You defeated " + enemy.mon.monName;
+        state = BattleState.Wait;
         yield return new WaitForSeconds(1f);
         en.mons.Remove(en.mons[0]);
         SaveManager.DestroyMon(enemy.mon.monName);

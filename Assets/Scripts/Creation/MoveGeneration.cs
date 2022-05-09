@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MoveGeneration : MonoBehaviour
 {
@@ -9,15 +10,24 @@ public class MoveGeneration : MonoBehaviour
     private LineCreation line;
     private StatsGenerator stat;
     private string[] prefixs = {"Hyper","Mega","Strong","Quick","Evil","Weak","Holy","Draco","Crazy","Sad","Happy","Angry","Meh","Shattered","Old","Brave","Bloody","Rough","Huge","Sharp"};
-    private string[] capNouns = {"Money","Freedom","Business","Gun","Market"};
+    private string[] idealNouns = {"Prayer",""};
+    private string[] realNouns = {"Truth",""};
+    private string[] utoNouns = {"Perfection"};
+    private string[] comNouns = {"Sharing","Corruption",""};
+    private string[] capNouns = {"Money","Freedom","Business","Gun","Market","Economy"};
+    private string[] socNouns = {"",""};
+    private string[] utilNouns = {"",""};
+    private string[] egoNouns = {"Ego","Narcissism",""};
+    private string[] intNouns = {"Logic",""};
+    private string[] welNouns = {"Kindness",""};
+    private string[] pacNouns = {"Protest",""};
+    private string[] nepNouns = {"Bias","Family","Preference"};
     public List<Move> MakeMoves(){
         moves.Clear();
         line = GetComponent<LineCreation>();
         stat = GetComponent<StatsGenerator>();
         for(int i = 0; i < 4 ; i++){
             Move mo = new Move();
-            //MoveName
-            mo.MoveName = MakeMoveName();
             //Stats
             int damage = Random.Range(50,line.lRend.positionCount * 5);
             mo.Accuracy = Random.Range(40,101);
@@ -53,17 +63,63 @@ public class MoveGeneration : MonoBehaviour
             }else{
                 mo.effectMe = false;
             }
+            //MoveName
+            mo.MoveName = MakeMoveName(mo);
             moves.Add(mo);
         }
         return moves;
     }
 
-    string MakeMoveName(){
+    string MakeMoveName(Move mo){
         string moveName = "";
         int randWord = Random.Range(0,prefixs.Length);
         moveName += prefixs[randWord];
-        int randNoun = Random.Range(0,capNouns.Length);
-        moveName += capNouns[randNoun];
+        List<string> nounList = GetMoveNames(mo);
+        int randNoun = Random.Range(0,nounList.Count - 1);
+        moveName += nounList[randNoun];
         return moveName;
+    }
+
+    List<string> GetMoveNames(Move mo){
+        List<string> names = new List<string>();
+        switch(mo.Type){
+            case "Idealism":
+                names = idealNouns.ToList<string>();
+                break;   
+            case "Realism":
+                names = realNouns.ToList<string>();
+                break;
+            case "Utopianism":
+                names = utoNouns.ToList<string>();
+                break;
+            case "Communism":
+                names = comNouns.ToList<string>();
+                break;
+            case "Capitalism":
+                names = capNouns.ToList<string>();
+                break;
+            case "Socialism":
+                names = socNouns.ToList<string>();
+                break;
+            case "Utilitarianism":
+                names = utilNouns.ToList<string>();
+                break;
+            case "Egoism":
+                names = egoNouns.ToList<string>();
+                break;
+            case "Intellectualism":
+                names  = intNouns.ToList<string>();
+                break;
+            case "Welfarism":
+                names = welNouns.ToList<string>();
+                break;
+            case "Pacifism":
+                names = pacNouns.ToList<string>();
+                break;
+            case "Nepotism":
+                names = nepNouns.ToList<string>();
+                break;
+        }
+        return names;
     }
 }

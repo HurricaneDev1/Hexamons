@@ -34,6 +34,7 @@ public class SaveStats : MonoBehaviour
         mon.monName = stats.monName;
         mon.speed = stats.Speed;
         mon.intelligence = stats.Intelligence;
+        mon.attackGradient = stats.GradientAttack;
         mon.type1 = stats.finalType[0];
         if(stats.finalType.Count == 2){
             mon.type2 = stats.finalType[1];
