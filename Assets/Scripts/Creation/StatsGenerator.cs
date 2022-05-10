@@ -61,7 +61,7 @@ public class StatsGenerator : MonoBehaviour
     void MakeStats(){
         int posCount = line.lRend.positionCount;
         Attack = Random.Range(posCount, (int)(posCount * 1.5));
-        Defense = Random.Range(posCount,(int)(posCount * 1.5));
+        Defense = Random.Range((int)(posCount * 1.5),posCount * 2);
         Intelligence = Random.Range(posCount,(int)(posCount * 1.5));
         Speed = Random.Range(posCount, (int)(posCount * 1.5));
         Health = Random.Range(posCount * 15, posCount * 20);

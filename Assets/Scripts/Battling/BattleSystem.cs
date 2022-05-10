@@ -339,6 +339,7 @@ public class BattleSystem : MonoBehaviour
         }else if(state == BattleState.Wait){
             state = BattleState.Start;
         }
+        yield return new WaitForSeconds(1f);
     }
 
     //Calculates stab and stats afffect on attack
@@ -466,7 +467,7 @@ public class BattleSystem : MonoBehaviour
                 if(playAnimation == true){
                     yield return new WaitForSeconds(1f);
                 }
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.5f);
                 player.TakeDamage(CalcDamage(curMove,enemy), curMove);
                 enemy.hex.PlayAttack();
                 if(state == BattleState.PlayerDead)break;
