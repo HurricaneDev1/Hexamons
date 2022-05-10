@@ -27,10 +27,10 @@ public class BattleMon: Typings
         StartCoroutine(TypeSetUp(curMove));
         if(finalDamage < 0)finalDamage = 1;
         mon.currentHealth -= finalDamage;
+        CheckDeath();
         if(isEnemy == false){
             bat.healthPercentageText.text = mon.currentHealth.ToString() + "/" + mon.maxHealth;
         }
-        CheckDeath();
         SetSize();
     }
 
