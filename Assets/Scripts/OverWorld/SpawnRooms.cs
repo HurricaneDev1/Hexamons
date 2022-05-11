@@ -10,7 +10,8 @@ public class SpawnRooms : MonoBehaviour
     void Start()
     {
         foreach(Transform spawnPoint in points){
-            Instantiate(rooms[0],spawnPoint.position,Quaternion.identity);
+            int randomRoom = Random.Range(0,rooms.Count);
+            Instantiate(rooms[randomRoom],spawnPoint.position,Quaternion.identity);
         }
     }
 
