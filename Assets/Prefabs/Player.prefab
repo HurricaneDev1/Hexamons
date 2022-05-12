@@ -126,6 +126,9 @@ MonoBehaviour:
   grassLayer:
     serializedVersion: 2
     m_Bits: 64
+  healLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!61 &7188138217263122427
 BoxCollider2D:
   m_ObjectHideFlags: 0

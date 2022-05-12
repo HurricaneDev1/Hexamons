@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 input;
     public LayerMask solidObjects;
     public LayerMask grassLayer;
+    public LayerMask healLayer;
 
     private void Update(){
         if(!isMoving){
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
 
         CheckForEncounters();
+        CheckForHeal();
     }
 
     private bool IsWalkable(Vector3 targetPos){
@@ -52,6 +54,17 @@ public class PlayerMovement : MonoBehaviour
         if(Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null){
             if(Random.Range(1,101) <= 10){
                 SceneManager.LoadScene("WildMonScene");
+            }
+        }
+    }
+
+    private void CheckForHeal(){
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, healLayer) != null){
+            Debug.Log("IsHeal");
+            List<SaveMon> myMons = GrabMon.GetMons(true);
+            foreach(SaveMon mon in myMons){
+                mon.currentHealth = mon.maxHealth;
+                SaveManager.Save(mon);
             }
         }
     }

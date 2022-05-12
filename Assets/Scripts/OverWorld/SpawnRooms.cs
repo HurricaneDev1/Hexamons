@@ -11,15 +11,19 @@ public class SpawnRooms : MonoBehaviour
     [SerializeField]private Transform nextRoom;
     [SerializeField]private int roomHeight;
     [SerializeField]private int roomWidth;
+    [SerializeField]private int numChecks;
     // Start is called before the first frame update
     void Start()
     {
         startRoom = points[Random.Range(0,points.Count)];
         activePoints.Add(startRoom);
+        // for(int i = 0; i < numChecks; i++){
+        //     SummonRooms();
+        // }
     }
 
     void Update(){
-        if(Input.GetKeyDown(KeyCode.K)){
+        if(Input.GetKey(KeyCode.K)){
             SummonRooms();
         }
     }
@@ -32,6 +36,7 @@ public class SpawnRooms : MonoBehaviour
 
         int pointCount = activePoints.Count;
         for(int i = 0; i < pointCount; i++){
+            if(i == activePoints.Count)break;
             int randomRoom = Random.Range(0,rooms.Count);
             Instantiate(rooms[randomRoom],activePoints[i].position,Quaternion.identity);
             activePoints.Remove(activePoints[i]);

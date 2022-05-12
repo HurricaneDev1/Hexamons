@@ -82,3 +82,18 @@ public class GetSavedHexa : MonoBehaviour
         }
     }   
 }
+
+public static class GrabMon{
+    public static List<SaveMon> GetMons(bool yours){
+        string dir = Application.persistentDataPath + "/MonSaveData/";
+        string[] monFiles = Directory.GetFiles(dir);
+        List<SaveMon> mo = new List<SaveMon>();
+        for(int i = 0; i < monFiles.Length; i++){
+            SaveMon loadMon = SaveManager.Load(monFiles[i]);
+            if(loadMon.isMine == yours){
+                mo.Add(loadMon);
+            } 
+        }
+        return mo;
+    }
+}
