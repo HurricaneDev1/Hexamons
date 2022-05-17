@@ -6,6 +6,7 @@ using TMPro;
 
 public enum BattleState{
     Start,
+    SetUp,
     SelectAction,
     SelectMove,
     SwapMon,
@@ -27,6 +28,8 @@ public class BattleSystem : MonoBehaviour
     public List<SaveMon> enemies = new List<SaveMon>();
     [SerializeField]private GameObject battleUI;
     [SerializeField]private GameObject monSelection;
+    [SerializeField]private GameObject choiceArea;
+    [SerializeField]private GameObject battleMons;
     [Header("Text")]
     [SerializeField]private TextMeshProUGUI nameText;
     [SerializeField]private TextMeshProUGUI enemyNameText;
@@ -48,13 +51,19 @@ public class BattleSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = BattleState.Start;
         currentMon = PlayerPrefs.GetInt("CurrentMon");
         player.SetSize();
+        state = BattleState.Wait;
     }
     void Update(){
         //State machine to see what to do next
         switch(state){
+            case BattleState.SetUp:
+                state = BattleState.Start;
+                battleUI.SetActive(true);
+                battleMons.SetActive(true);
+                choiceArea.SetActive(false);
+                break;
             case BattleState.Start:
                 UpdateName();
                 healthPercentageText.text = player.mon.currentHealth.ToString() + "/" + player.mon.maxHealth;
