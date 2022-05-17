@@ -25,9 +25,9 @@ public class StatsGenerator : MonoBehaviour
         finalType = ChooseType();
         line = GetComponent<LineCreation>();
         moveGen = GetComponent<MoveGeneration>();
-        finalType = ChooseType();
-        MakeStats();
-        moves = moveGen.MakeMoves();
+        // finalType = ChooseType();
+        // MakeStats();
+        // moves = moveGen.MakeMoves();
     }
 
     // Update is called once per frame
@@ -35,8 +35,7 @@ public class StatsGenerator : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.J)){
             finalType = ChooseType();
-            MakeStats();
-            moves = moveGen.MakeMoves();
+            StartCoroutine(MakeStats());
         }
     }
 
@@ -58,7 +57,8 @@ public class StatsGenerator : MonoBehaviour
     }
 
     //Sets attack and other stats
-    void MakeStats(){
+    IEnumerator MakeStats(){
+        yield return new WaitForSeconds(0.2f);
         int posCount = line.lRend.positionCount;
         Attack = Random.Range(posCount, (int)(posCount * 1.5));
         Defense = Random.Range((int)(posCount * 1.5),posCount * 2);
@@ -67,6 +67,7 @@ public class StatsGenerator : MonoBehaviour
         Health = Random.Range(posCount * 15, posCount * 20);
         GradientAttack = line.MakeGradient();
         MakeName();
+        moves = moveGen.MakeMoves();
     }
 
     //Randomly puts leters together to create a name

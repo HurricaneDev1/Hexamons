@@ -189,6 +189,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Switches the hexamon in battle and changes stuff to fit it
     void SwapMon(){
+        PlayerPrefs.SetInt("CurrentMon",currentMon);
         player.mon = get.mons[currentMon];
         Hexamon hex = player.GetComponent<Hexamon>();
         hex.monData = get.mons[currentMon];

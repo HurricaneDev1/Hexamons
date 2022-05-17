@@ -11,9 +11,9 @@ public class SaveStats : MonoBehaviour
     [SerializeField]private SpriteRenderer picture;
     [SerializeField]private float pictureSize;
 
-    void Start(){
-        StartCoroutine(SetStats());
-    }
+    // void Start(){
+    //     StartCoroutine(SetStats());
+    // }
     // Update is called once per frame
     void Update()
     {

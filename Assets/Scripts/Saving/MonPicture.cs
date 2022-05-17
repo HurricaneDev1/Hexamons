@@ -8,19 +8,20 @@ using System.Collections;
      public bool UseSimple = false;
      private StatsGenerator stats;
      public string filename;
+     public Camera pictureTaker;
     
-    void Start(){
-        StartCoroutine(PictureTake());
-    }
+    // void Start(){
+    //     StartCoroutine(PictureTake());
+    // }
      void Update(){
         if(Input.GetKeyDown(KeyCode.K)){
-            PictureTake();
+            StartCoroutine(PictureTake());
         }
      }
 
     IEnumerator PictureTake(){
         yield return new WaitForSeconds(0.3f);
-            var cam = Camera.main;
+            var cam = pictureTaker;
             // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
             cam.cullingMask = LayerMask.GetMask("Default");
             

@@ -16,10 +16,10 @@ public class LineCreation : MonoBehaviour
     [SerializeField]private int maxEyes;
     private GameObject newLineGen;
     // Start is called before the first frame update
-    void Start()
-    {
-        SetUpLines();
-    }
+    // void Start()
+    // {
+    //     SetUpLines();
+    // }
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.J)){
