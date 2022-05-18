@@ -23,12 +23,14 @@ public class LineCreation : MonoBehaviour
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.J)){
-            SetUpLines();
+            SetUpLines(20,60);
         }
     }
 
     //Makes random lines going random directions with a random gradient
-    void SetUpLines(){
+    public void SetUpLines(int min, int max){
+        minLines = min;
+        numLines = max;
         if(newLineGen != null){
             Destroy(newLineGen);
         }
@@ -72,7 +74,7 @@ public class LineCreation : MonoBehaviour
     }
 
     //Makes a color
-    Color32 MakeColor(){
+    public Color32 MakeColor(){
         return new Color32(
         (byte)UnityEngine.Random.Range(0, 255), //Red
         (byte)UnityEngine.Random.Range(0, 255), //Green

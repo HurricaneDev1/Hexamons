@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     }
 
     public void MonChange(){
+        mons = get.GetMons(false);
         hex.monData = mons[0];
         enemy.mon = mons[0];
         StartCoroutine(hex.SetUpPicture());

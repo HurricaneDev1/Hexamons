@@ -24,7 +24,9 @@ public class BattleSystem : MonoBehaviour
     public BattleMon enemy;
     public BattleMon player;
     public GetSavedHexa get;
+    public ChoiceStuff choice;
     public Enemy en;
+    public Shop shop;
     public List<SaveMon> enemies = new List<SaveMon>();
     [SerializeField]private GameObject battleUI;
     [SerializeField]private GameObject monSelection;
@@ -63,6 +65,7 @@ public class BattleSystem : MonoBehaviour
                 battleUI.SetActive(true);
                 battleMons.SetActive(true);
                 choiceArea.SetActive(false);
+                en.MonChange();
                 break;
             case BattleState.Start:
                 UpdateName();
@@ -128,6 +131,7 @@ public class BattleSystem : MonoBehaviour
         enemyType.text = enemy.mon.type1;
         if(enemy.mon.type2 != "")
             enemyType.text += "/" + enemy.mon.type2;
+        player.SetSize();
     }
     //Enables text and changes the battlestate
     void SetUpActions(){
@@ -162,6 +166,7 @@ public class BattleSystem : MonoBehaviour
     }
     //Disables stuff and changes battlestate for swapping
     void SetUpSwap(){
+        battleText.enabled = false;
         state = BattleState.SwapMon;
         battleUI.SetActive(false);
         monSelection.SetActive(true);
@@ -170,6 +175,7 @@ public class BattleSystem : MonoBehaviour
 
     //Gets rid of everything set up for swapping
     void StopSwap(){
+        battleText.enabled = true;
         battleUI.SetActive(true);
         monSelection.SetActive(false);
         Hexamon hex = player.GetComponent<Hexamon>();
@@ -262,6 +268,7 @@ public class BattleSystem : MonoBehaviour
 
     //Turns the enemy pokemon to yours
     IEnumerator Catch(){
+        //* Add limited catching
         foreach(TextMeshProUGUI g in actionText){
             g.enabled = false;
         }
@@ -284,7 +291,7 @@ public class BattleSystem : MonoBehaviour
                 UpdateName();
                 state = BattleState.Start;
             }else{
-                SceneManager.LoadScene("WalkingArea");
+                EndBattle();
             }
         }else{
             battleText.text = "You failed to catch " + enemy.mon.monName;
@@ -496,8 +503,12 @@ public class BattleSystem : MonoBehaviour
         battleText.text = "You defeated " + enemy.mon.monName;
         state = BattleState.Wait;
         yield return new WaitForSeconds(1f);
+        shop.hexaBux += Random.Range(shop.choice.floorNum * 10, shop.choice.floorNum * 30);
+        battleText.text = "You won " + shop.hexaBux + " Hexabux";
+        yield return new WaitForSeconds(1);
         en.mons.Remove(en.mons[0]);
         SaveManager.DestroyMon(enemy.mon.monName);
+
         if(en.mons.Count > 0){
             en.MonChange();
             enemy.SetSize();
@@ -508,7 +519,7 @@ public class BattleSystem : MonoBehaviour
                 SaveManager.Save(savingMon);
             }
             PlayerPrefs.SetInt("CurrentMon",currentMon);
-            SceneManager.LoadScene("WalkingArea");
+            EndBattle();
         }
     }
 
@@ -530,7 +541,16 @@ public class BattleSystem : MonoBehaviour
            PlayerPrefs.SetInt("CurrentMon",0);
            battleText.text = "You are absolute garbage";
            yield return new WaitForSeconds(3);
-           SceneManager.LoadScene("WalkingArea"); 
+           //* Make it restart game
+            EndBattle();
         }
+    }
+
+    void EndBattle(){
+        battleUI.SetActive(false);
+        battleText.enabled = false;
+        choiceArea.SetActive(true);
+        battleMons.SetActive(false);
+        choice.state = ChoiceState.SetChoices;
     }
 }

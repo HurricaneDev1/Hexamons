@@ -17,25 +17,24 @@ public class StatsGenerator : MonoBehaviour
     public List<Move> moves = new List<Move>();
     private char[] letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     [SerializeField]private int maxLetters;
-    private LineCreation line;
+    public LineCreation line;
     private MoveGeneration moveGen;
+    private MonPicture pic;
+    public SaveStats save;
     // Start is called before the first frame update
     void Start()
     {
         finalType = ChooseType();
         line = GetComponent<LineCreation>();
         moveGen = GetComponent<MoveGeneration>();
-        // finalType = ChooseType();
-        // MakeStats();
-        // moves = moveGen.MakeMoves();
+        pic = GetComponent<MonPicture>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.J)){
-            finalType = ChooseType();
-            StartCoroutine(MakeStats());
+            MakeMon(20,60);
         }
     }
 
@@ -85,5 +84,13 @@ public class StatsGenerator : MonoBehaviour
             }
         }
         Debug.Log(monName);
+    }
+
+    public void MakeMon(int minLines, int maxLines){
+        line.SetUpLines(minLines,maxLines);
+        finalType = ChooseType();
+        StartCoroutine(MakeStats());
+        StartCoroutine(pic.PictureTake());
+        StartCoroutine(save.SetStats());
     }
 }

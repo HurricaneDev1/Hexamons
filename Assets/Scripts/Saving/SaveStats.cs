@@ -25,7 +25,7 @@ public class SaveStats : MonoBehaviour
         }
     }
 
-    IEnumerator SetStats(){
+    public IEnumerator SetStats(){
         yield return new WaitForSeconds(0.2f);
         mon.maxHealth = stats.Health;
         mon.currentHealth = mon.maxHealth;

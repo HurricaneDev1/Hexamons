@@ -19,7 +19,7 @@ using System.Collections;
         }
      }
 
-    IEnumerator PictureTake(){
+    public IEnumerator PictureTake(){
         yield return new WaitForSeconds(0.3f);
             var cam = pictureTaker;
             // Set a mask to only draw only elements in this layer. e.g., capture your player with a transparent background.
