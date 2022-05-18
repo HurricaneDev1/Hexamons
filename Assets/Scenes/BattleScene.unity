@@ -1539,7 +1539,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1912624293}
+      - m_Target: {fileID: 1722334670}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: BuyMon
         m_Mode: 1
@@ -2645,7 +2645,7 @@ Transform:
   - {fileID: 1492723249}
   - {fileID: 1023000965}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455508424
 GameObject:
@@ -3689,7 +3689,7 @@ RectTransform:
   - {fileID: 589939256}
   - {fileID: 1912624292}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4758,7 +4758,7 @@ Transform:
   - {fileID: 163648871}
   - {fileID: 321505100}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1254349607
 GameObject:
@@ -4824,7 +4824,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1258550579
 GameObject:
@@ -4855,7 +4855,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1258550581
 MonoBehaviour:
@@ -4875,6 +4875,7 @@ MonoBehaviour:
   get: {fileID: 1023000968}
   choice: {fileID: 1400646846}
   en: {fileID: 1492723250}
+  shop: {fileID: 1722334670}
   enemies: []
   battleUI: {fileID: 45468262}
   monSelection: {fileID: 156003308}
@@ -6250,7 +6251,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1912624293}
+      - m_Target: {fileID: 1722334670}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: BuyUpgrade
         m_Mode: 1
@@ -6383,7 +6384,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1912624293}
+      - m_Target: {fileID: 1722334670}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: Leave
         m_Mode: 1
@@ -7109,6 +7110,56 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5792531184342136062, guid: 75e3ce337dad61b4e8ce3ea522eb891f, type: 3}
   m_PrefabInstance: {fileID: 1718078217}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1722334669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1722334671}
+  - component: {fileID: 1722334670}
+  m_Layer: 0
+  m_Name: Shop Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1722334670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722334669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9ae93d5e45e294190d13bfcfe358fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hexaBux: 0
+  choice: {fileID: 1400646846}
+  buxCount: {fileID: 232620626}
+  priceTexts:
+  - {fileID: 22965462}
+  - {fileID: 1714695338}
+  - {fileID: 266871600}
+--- !u!4 &1722334671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722334669}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.89544, y: 1.0465131, z: -723.8695}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1732310586
 GameObject:
   m_ObjectHideFlags: 0
@@ -7550,7 +7601,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1912624292}
-  - component: {fileID: 1912624293}
   m_Layer: 5
   m_Name: ShopText
   m_TagString: Untagged
@@ -7582,25 +7632,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1912624293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912624291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af9ae93d5e45e294190d13bfcfe358fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexaBux: 0
-  choice: {fileID: 1400646846}
-  buxCount: {fileID: 232620626}
-  priceTexts:
-  - {fileID: 22965462}
-  - {fileID: 1714695338}
-  - {fileID: 266871600}
 --- !u!1 &1939400360
 GameObject:
   m_ObjectHideFlags: 0
@@ -8217,7 +8248,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1912624293}
+      - m_Target: {fileID: 1722334670}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: BuyHeal
         m_Mode: 1

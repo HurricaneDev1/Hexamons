@@ -132,6 +132,7 @@ public class BattleSystem : MonoBehaviour
         if(enemy.mon.type2 != "")
             enemyType.text += "/" + enemy.mon.type2;
         player.SetSize();
+        enemy.SetSize();
     }
     //Enables text and changes the battlestate
     void SetUpActions(){
@@ -272,33 +273,37 @@ public class BattleSystem : MonoBehaviour
         foreach(TextMeshProUGUI g in actionText){
             g.enabled = false;
         }
-        battleText.text = "You tried to catch " + enemy.mon.monName;
-        yield return new WaitForSeconds(1);
-        if(Random.Range(1,101) <= 40){
-            battleText.text = "You caught " + enemy.mon.monName;
+        // battleText.text = "You tried to catch " + enemy.mon.monName;
+        // yield return new WaitForSeconds(1);
+        // if(Random.Range(1,101) <= 40){
+        //     battleText.text = "You caught " + enemy.mon.monName;
 
-            yield return new WaitForSeconds(1);
-            en.mons[0].isMine = true;
-            get.mons.Add(en.mons[0]);
-            en.mons.Remove(en.mons[0]);
-            foreach(SaveMon savingMon in get.mons){
-                SaveManager.Save(savingMon);
-            }
-            PlayerPrefs.SetInt("CurrentMon",currentMon + 1);
-            if(en.mons.Count > 0){
-                en.MonChange();
-                enemy.SetSize();
-                UpdateName();
-                state = BattleState.Start;
-            }else{
-                EndBattle();
-            }
-        }else{
-            battleText.text = "You failed to catch " + enemy.mon.monName;
-            yield return new WaitForSeconds(1);
-            playerFirst = true;
-            state = BattleState.Enemy;
-        }
+        //     yield return new WaitForSeconds(1);
+        //     en.mons[0].isMine = true;
+        //     get.mons.Add(en.mons[0]);
+        //     en.mons.Remove(en.mons[0]);
+        //     foreach(SaveMon savingMon in get.mons){
+        //         SaveManager.Save(savingMon);
+        //     }
+        //     PlayerPrefs.SetInt("CurrentMon",currentMon + 1);
+        //     if(en.mons.Count > 0){
+        //         en.MonChange();
+        //         enemy.SetSize();
+        //         UpdateName();
+        //         state = BattleState.Start;
+        //     }else{
+        //         EndBattle();
+        //     }
+        // }else{
+        //     battleText.text = "You failed to catch " + enemy.mon.monName;
+        //     yield return new WaitForSeconds(1);
+        //     playerFirst = true;
+        //     state = BattleState.Enemy;
+        // }
+        battleText.text = "You wasted your turn, this feature doesn't work";
+        yield return new WaitForSeconds(1);
+        playerFirst = true;
+        state = BattleState.Enemy;
     }
     //Checks to see who goes first based on speed
     void SpeedCheck(){
@@ -541,7 +546,10 @@ public class BattleSystem : MonoBehaviour
            PlayerPrefs.SetInt("CurrentMon",0);
            battleText.text = "You are absolute garbage";
            yield return new WaitForSeconds(3);
-           //* Make it restart game
+           foreach(SaveMon savingMon in GrabMon.GetMons(false)){
+                SaveManager.DestroyMon(savingMon.monName);
+            }
+           SceneManager.LoadScene(0);
             EndBattle();
         }
     }

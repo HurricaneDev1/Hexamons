@@ -44,10 +44,11 @@ public class ChoiceStuff : MonoBehaviour
                 List<SaveMon> mons = GrabMon.GetMons(true);
                 if(mons.Count == 0){
                     StartCoroutine(GiftMon(40,80));
+                    state = ChoiceState.SetChoices;
                 }else{
                     GenerateGift();
+                    state = ChoiceState.SetChoices;
                 }
-                state = ChoiceState.SetChoices;
                 break;
             case ChoiceState.Shop:
                 shop.SetActive(true);
@@ -62,10 +63,6 @@ public class ChoiceStuff : MonoBehaviour
                 break;
             case ChoiceState.Wait:
                 break;
-        }
-
-        if(Input.GetKeyDown(KeyCode.K)){
-            state = ChoiceState.SetChoices;
         }
     }
 
