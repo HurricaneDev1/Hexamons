@@ -7,5 +7,6 @@ public class PlayGame : MonoBehaviour
 {
     public void NextScene(){
         SceneManager.LoadScene(1);
+        PlayerPrefs.SetInt("CurrentMon",0);
     }
 }

@@ -66,4 +66,11 @@ public class BattleMon: Typings
         }
         yield return new WaitForSeconds(0.8f);
     }
+
+    public void ClearStats(){
+        attackMod = 1;
+        speedMod = 1;
+        intelligenceMod = 1;
+        defenseMod = 1;
+    }
 }

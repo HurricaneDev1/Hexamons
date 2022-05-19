@@ -18,7 +18,9 @@ public class Shop : MonoBehaviour
         if(hexaBux >= choice.floorNum * 5){
             List<SaveMon> myMons = GrabMon.GetMons(true);
             foreach(SaveMon mon in myMons){
+                Debug.Log("Before: " + mon.currentHealth + "/" + mon.maxHealth);
                 mon.currentHealth = mon.maxHealth;
+                Debug.Log("After: " + mon.currentHealth + "/" + mon.maxHealth);
                 SaveManager.Save(mon);
             }
             choice.explanation.text = "All your Hexamons recovered their lost Health";
@@ -36,7 +38,7 @@ public class Shop : MonoBehaviour
     }
 
     public void BuyUpgrade(){
-        if(hexaBux >= choice.floorNum * 2){
+        if(hexaBux >= choice.floorNum * 8){
             List<SaveMon> myMons = GrabMon.GetMons(true);
             foreach(SaveMon mon in myMons){
                 mon.attack = (int)(mon.attack * 1.2);
@@ -46,7 +48,7 @@ public class Shop : MonoBehaviour
                 mon.maxHealth = (int)(mon.maxHealth * 1.2);
                 SaveManager.Save(mon);
             }
-            hexaBux -= choice.floorNum * 2;
+            hexaBux -= choice.floorNum * 8;
             buxCount.text = "Hexabux:" + hexaBux.ToString();
         }
     }
@@ -59,6 +61,6 @@ public class Shop : MonoBehaviour
         buxCount.text = "Hexabux:" + hexaBux.ToString();
         priceTexts[0].text = "Heal: " + (choice.floorNum * 5).ToString();
         priceTexts[1].text = "Buy Mon: " + (choice.floorNum * 10).ToString();
-        priceTexts[2].text = "Buff Mons: " +(choice.floorNum * 2).ToString();
+        priceTexts[2].text = "Buff Mons: " +(choice.floorNum * 8).ToString();
     }
 }

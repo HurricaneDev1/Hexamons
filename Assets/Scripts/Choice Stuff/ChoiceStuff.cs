@@ -86,7 +86,7 @@ public class ChoiceStuff : MonoBehaviour
 
     void GetChoices(){
         if(floorNum != 5 && floorNum != 11 && floorNum != 17){
-            int roomChoice1 = Random.Range(0,7);
+            int roomChoice1 = Random.Range(0,5);
             if(roomChoice1 <= 2){
                 choice1.text = "Battle";
             }else if(roomChoice1 == 3){
@@ -99,7 +99,7 @@ public class ChoiceStuff : MonoBehaviour
             // }
             choice1.color = stats.line.MakeColor();
 
-            int roomChoice2 = Random.Range(0,7);
+            int roomChoice2 = Random.Range(0,5);
             if(roomChoice2 <= 2){
                 choice2.text = "Battle";
             }else if(roomChoice2 == 3){
