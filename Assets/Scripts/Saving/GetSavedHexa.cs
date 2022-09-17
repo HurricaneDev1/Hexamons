@@ -59,6 +59,7 @@ public class GetSavedHexa : MonoBehaviour
     public void SpawnMons(){
         for(int i = 0; i < mons.Count; i++){
             TextMeshProUGUI text = Instantiate(monName,new Vector3(textSpawn.position.x,textSpawn.position.y - i),Quaternion.identity);
+            mons = GetMons(true);
             text.text = mons[i].monName;
             text.transform.SetParent(monSelection,true);
             text.rectTransform.localScale = new Vector3(2,2,2);

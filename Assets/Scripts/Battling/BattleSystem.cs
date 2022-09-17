@@ -62,6 +62,7 @@ public class BattleSystem : MonoBehaviour
         switch(state){
             case BattleState.SetUp:
                 state = BattleState.Start;
+            
                 battleUI.SetActive(true);
                 battleMons.SetActive(true);
                 choiceArea.SetActive(false);

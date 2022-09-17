@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public enum ChoiceState{
     Battle,
@@ -39,6 +40,7 @@ public class ChoiceStuff : MonoBehaviour
                 break;
             case ChoiceState.Battle:
                 StartCoroutine(BattleSetup(floorNum * 5, floorNum * 15));
+                explanation.text = "";
                 break;
             case ChoiceState.Gift:
                 List<SaveMon> mons = GrabMon.GetMons(true);
@@ -54,12 +56,14 @@ public class ChoiceStuff : MonoBehaviour
                 shop.SetActive(true);
                 choices.SetActive(false);
                 state = ChoiceState.Wait;
+                explanation.text = "";
                 break;
             // case ChoiceState.Event:
             //     break;
             case ChoiceState.Boss:
                 Debug.Log("Boss");
                 StartCoroutine(BattleSetup(floorNum * 15, floorNum * 25));
+                explanation.text = "";
                 break;
             case ChoiceState.Wait:
                 break;
@@ -85,6 +89,13 @@ public class ChoiceStuff : MonoBehaviour
     }
 
     void GetChoices(){
+        if(floorNum == 18){
+            choice1.text = "Win";
+            choice2.text = "Win";
+            choice1.color = Color.yellow;
+            choice2.color = Color.yellow;
+            explanation.text = "You have beat the game";
+        }
         if(floorNum != 5 && floorNum != 11 && floorNum != 17){
             int roomChoice1 = Random.Range(0,7);
             if(roomChoice1 <= 2){
