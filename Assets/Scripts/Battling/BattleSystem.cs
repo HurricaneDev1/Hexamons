@@ -66,6 +66,11 @@ public class BattleSystem : MonoBehaviour
                 battleMons.SetActive(true);
                 choiceArea.SetActive(false);
                 en.MonChange();
+                player.ClearStats();
+                enemy.ClearStats();
+                get.mons = GrabMon.GetMons(true);
+                player.mon = get.mons[0];
+                player.hex.monData = get.mons[0];
                 break;
             case BattleState.Start:
                 UpdateName();
