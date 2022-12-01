@@ -62,7 +62,6 @@ public class BattleSystem : MonoBehaviour
         switch(state){
             case BattleState.SetUp:
                 state = BattleState.Start;
-            
                 battleUI.SetActive(true);
                 battleMons.SetActive(true);
                 choiceArea.SetActive(false);
@@ -76,6 +75,7 @@ public class BattleSystem : MonoBehaviour
             case BattleState.SelectAction:
                 SelectAction();
                 if(Input.GetKeyDown(KeyCode.Z)){
+                    UpdateName();
                     if(actionNum == 0){
                         SetUpMoves(player.mon.moves);
                     }else if(actionNum == 1){
@@ -182,6 +182,7 @@ public class BattleSystem : MonoBehaviour
         monSelection.SetActive(false);
         Hexamon hex = player.GetComponent<Hexamon>();
         hex.monData = player.mon;
+        StartCoroutine(hex.SetUpPicture());
         for(int i = 0; i < get.mons.Count; i++){
             if(get.mons[i] == hex.monData){
                 currentMon = i;
@@ -214,10 +215,7 @@ public class BattleSystem : MonoBehaviour
         nameText.text = player.mon.monName;
         healthPercentageText.text = player.mon.currentHealth.ToString() + "/" + player.mon.maxHealth;
         player.SetSize();
-        player.attackMod = 1;
-        player.speedMod = 1;
-        player.intelligenceMod = 1;
-        player.defenseMod = 1;
+        player.ClearStats();
         foreach(TextMeshProUGUI g in actionText){
             g.enabled = false;
         }
@@ -518,6 +516,7 @@ public class BattleSystem : MonoBehaviour
         if(en.mons.Count > 0){
             en.MonChange();
             enemy.SetSize();
+            enemy.ClearStats();
             UpdateName();
             state = BattleState.Start;
         }else{

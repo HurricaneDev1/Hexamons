@@ -13,5 +13,6 @@ public class PlayGame : MonoBehaviour
             SaveManager.DestroyMon(savingMon.monName);
         }
         SceneManager.LoadScene(1);
+        PlayerPrefs.SetInt("CurrentMon",0);
     }
 }
